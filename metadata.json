@@ -1,0 +1,6 @@
+{
+  "name": "Estación Versalles - Programación & Cyber Ops",
+  "description": "Videojuego educativo de programación en el espacio. Resuelve crisis bajo presión, hackea subredes hostiles y programa sistemas de naves mediante terminal.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

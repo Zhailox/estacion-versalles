@@ -1,0 +1,30 @@
+{
+  "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
+  "appId": "com.estacionversalles.game",
+  "productName": "Estación Versalles",
+  "copyright": "Estación Versalles © 2026",
+  "directories": {
+    "output": "release"
+  },
+  "files": [
+    "dist/**/*",
+    "electron/**/*",
+    "package.json"
+  ],
+  "compression": "maximum",
+  "asar": true,
+  "win": {
+    "target": [
+      {
+        "target": "portable",
+        "arch": [
+          "x64"
+        ]
+      }
+    ],
+    "artifactName": "Estacion-Versalles-Portable.exe"
+  },
+  "portable": {
+    "unpackDirName": "EstacionVersalles"
+  }
+}

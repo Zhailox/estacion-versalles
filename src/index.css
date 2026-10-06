@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-display: 'Orbitron', sans-serif;
+    --font-mono: 'Share Tech Mono', 'JetBrains Mono', monospace;
+    --font-sans: 'Rajdhani', sans-serif;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #020b18;
+    color: #c8e8f0;
+  }
+
+  h1, h2, h3, .font-orbitron {
+    font-family: var(--font-display);
+  }
+
+  code, pre, .font-tech, input[type="text"], textarea {
+    font-family: var(--font-mono);
+  }
+}
+
+/* CRT Screen Scanlines (toggleable in HUD) */
+.crt-overlay::before {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+  z-index: 999;
+  background-size: 100% 3px, 6px 100%;
+  pointer-events: none;
+  opacity: 0.75;
+}
+
+/* Glowing text and borders */
+.glow-cyan {
+  text-shadow: 0 0 10px rgba(0, 245, 255, 0.6), 0 0 20px rgba(0, 245, 255, 0.3);
+}
+
+.glow-red {
+  text-shadow: 0 0 10px rgba(255, 59, 59, 0.8), 0 0 20px rgba(255, 59, 59, 0.4);
+}
+
+.glow-box-cyan {
+  box-shadow: 0 0 15px rgba(0, 245, 255, 0.25), inset 0 0 15px rgba(0, 245, 255, 0.1);
+}
+
+.glow-box-red {
+  box-shadow: 0 0 20px rgba(255, 59, 59, 0.4), inset 0 0 15px rgba(255, 59, 59, 0.2);
+}
+
+.glow-box-amber {
+  box-shadow: 0 0 18px rgba(255, 140, 0, 0.35), inset 0 0 15px rgba(255, 140, 0, 0.15);
+}
+
+/* Starfield Background */
+.stars-layer {
+  background-image: 
+    radial-gradient(1px 1px at 15px 25px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 45px 75px, #00f5ff, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 120px 40px, #a855f7, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 200px 180px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 280px 90px, #ffd700, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 350px 220px, #00f5ff, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 400px 300px;
+}
+
+/* Custom scrollbar for terminals */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(2, 11, 24, 0.8);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 245, 255, 0.3);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 245, 255, 0.6);
+}

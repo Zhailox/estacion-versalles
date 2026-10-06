@@ -1,0 +1,212 @@
+export interface ArtworkEntry {
+  id: string;
+  title: string;
+  category: 'versalles' | 'hyperion' | 'titan' | 'helios' | 'solar';
+  locationName: string;
+  sectorTag: string;
+  image: string;
+  description: string;
+  specs: string;
+}
+
+export const STATION_ARTWORKS: ArtworkEntry[] = [
+  // ─── ESTACIÓN VERSALLES ──────────────────────────────────────
+  {
+    id: 'art-versalles-map',
+    title: 'Plano General de Distribución - Estación Versalles',
+    category: 'versalles',
+    locationName: 'Estación Orbital Versalles',
+    sectorTag: 'CARTOGRAFÍA // DISTRIBUCIÓN GENERAL',
+    image: '/assets/Mapa General Estación Versalles.png',
+    description: 'Arquitectura interior de la Estación Versalles mostrando el anillo habitacional, el acelerador central y los accesos blindados a los 5 sectores operacionales.',
+    specs: 'Resolución 4K UHD · Esquema Vectorial · Órbita Terrestre L2',
+  },
+  {
+    id: 'art-versalles-reactor',
+    title: 'Cámara de Fusión Tokamak',
+    category: 'versalles',
+    locationName: 'Estación Orbital Versalles',
+    sectorTag: 'INGENIERÍA // NÚCLEO DEL REACTOR',
+    image: '/assets/Vista Nucleo Reactor.png',
+    description: 'Generador de fusión nuclear toroidal con confinamiento magnético superconductor de deuterio-tritio para suministro eléctrico de toda la estación.',
+    specs: 'Potencia 1.2 Teravatios · Temperatura Núcleo: 15,400°C · Contención: Bobinas Nb3Sn',
+  },
+  {
+    id: 'art-versalles-lab',
+    title: 'Laboratorio de Datos & Procesamiento Cuántico',
+    category: 'versalles',
+    locationName: 'Estación Orbital Versalles',
+    sectorTag: 'I+D // PROCESAMIENTO CUÁNTICO',
+    image: '/assets/Vista Laboratorio de Datos.png',
+    description: 'Bahía de computación óptica con matrices de compuertas booleanas integradas y enlace cuántico continuo con el Centro de Control Terrestre.',
+    specs: 'Matrices Ópticas Qubit-64 · Frecuencia: 4.8 THz · Cifrado Asimétrico RSA-4096',
+  },
+  {
+    id: 'art-versalles-bridge',
+    title: 'Puente de Navegación & Control Orbital',
+    category: 'versalles',
+    locationName: 'Estación Orbital Versalles',
+    sectorTag: 'OPERACIONES // PUENTE DE MANDO',
+    image: '/assets/Puente de Navegacion.jpg',
+    description: 'Consola de mando primario para el control de altitud orbital, telemetría balística y orientación de las cuatro toberas de propulsión RCS.',
+    specs: 'Redundancia Cuádruple · RCS Vectorial 95% empuje · Vector Decaimiento: 0.0 m/s²',
+  },
+  {
+    id: 'art-versalles-shields',
+    title: 'Matriz de Escudos & Ciber-Defensa',
+    category: 'versalles',
+    locationName: 'Estación Orbital Versalles',
+    sectorTag: 'DEFENSA // MATRIZ DEFLECTORA',
+    image: '/assets/Matriz de Escudos.jpg',
+    description: 'Emisores de campos electromagnéticos de protección exterior combinados con firewalls de filtrado profundo de paquetes para neutralizar intrusiones.',
+    specs: 'Cobertura 360° · Aislamiento Socket 8088 · Eficiencia de Deflexión: 92%',
+  },
+  {
+    id: 'art-versalles-drones',
+    title: 'Estación de Drones & Soporte Vital',
+    category: 'versalles',
+    locationName: 'Estación Orbital Versalles',
+    sectorTag: 'LOGÍSTICA // HANGAR DE MANTENIMIENTO',
+    image: '/assets/Estacion de Drones.jpg',
+    description: 'Hangar autónomo con plataformas de despegue y carga inductiva para drones de servicio robótico, depuradores de CO₂ y recirculación de O₂.',
+    specs: 'Escuadrón Alfa 6 Unidades · Algoritmo FIFO Prioritario · Presurización 95%',
+  },
+
+  // ─── ACORAZADO ESTELAR HYPERION-9 ────────────────────────────
+  {
+    id: 'art-hyperion-ship',
+    title: 'Acorazado Estelar Hyperion-9',
+    category: 'hyperion',
+    locationName: 'Acorazado Hyperion-9',
+    sectorTag: 'FLOTA MILITAR // FRAGATA PESADA',
+    image: '/assets/hyperion.jpg',
+    description: 'Navío acorazado de patrulla de la Flota Orbital asignado al Cinturón de Asteroides. Blindaje multicapa de titanio y reactores de iones auxiliares.',
+    specs: 'Eslora 480 metros · Blindaje Compuesto Clase V · Posición: Cinturón Sector 44',
+  },
+  {
+    id: 'art-hyperion-cannon',
+    title: 'Batería de Cañón de Iones Pesado',
+    category: 'hyperion',
+    locationName: 'Acorazado Hyperion-9',
+    sectorTag: 'ARTILLERÍA // CAÑÓN DE IONES',
+    image: '/assets/mision_canon_iones.jpg',
+    description: 'Sistema primario de defensa de energía dirigida con bobinas de aceleración lineal para pulverizar asteroides densos en la trayectoria de vuelo.',
+    specs: 'Calibre 120 GW · Ciclo de Carga: 95% · Alcance Efectivo: 45,000 km',
+  },
+  {
+    id: 'art-hyperion-firewall',
+    title: 'Cortafuegos Militar CORTEX-9',
+    category: 'hyperion',
+    locationName: 'Acorazado Hyperion-9',
+    sectorTag: 'CIBER-GUERRA // MATRIZ CORTEX',
+    image: '/assets/mision_cortex_firewall.jpg',
+    description: 'Centro neurálgico de ciberguerra blindado con hardware cuántico inmune a pulsos electromagnéticos y encriptación de grado militar de la Flota.',
+    specs: 'Cifrado Cuántico Galois · Filtrado de Pulso EMP · Tiempo de Respuesta: 0.2 ms',
+  },
+  {
+    id: 'art-hyperion-fighters',
+    title: 'Hangar de Cazas & Catapultas ALPHA',
+    category: 'hyperion',
+    locationName: 'Acorazado Hyperion-9',
+    sectorTag: 'ALA DE COMBATE // CATAPULTAS ELECTROMAGNÉTICAS',
+    image: '/assets/mision_hangar_cazas.jpg',
+    description: 'Bahía de eyección magnética para cazas ligeros de intercepción rápida con tubos de aceleración presurizados al vacío.',
+    specs: 'Aceleración Catapulta 18G · Capacidad: 12 Interceptores · Vector ALPHA Activo',
+  },
+
+  // ─── PUESTO MINERO TITÁN-IV ──────────────────────────────────
+  {
+    id: 'art-titan-base',
+    title: 'Puesto Avanzado Minero Titán-IV',
+    category: 'titan',
+    locationName: 'Puesto Avanzado Titán-IV',
+    sectorTag: 'COLONIA SATURNIANA // REFINERÍA SUBGLACIAL',
+    image: '/assets/titan.jpg',
+    description: 'Complejo industrial en la luna Titán de Saturno construido sobre la cuenca del mar de metano líquido Kraken Mare para extracción de hidrocarburos.',
+    specs: 'Distancia 8.5 UA · Presión Atmosférica: 1.5 bar · Temperatura Exterior: -180°C',
+  },
+  {
+    id: 'art-titan-methane',
+    title: 'Refinería Criogénica de Metano',
+    category: 'titan',
+    locationName: 'Puesto Avanzado Titán-IV',
+    sectorTag: 'EXTRACCIÓN // BOMBAS CRIOGÉNICAS KRAKEN',
+    image: '/assets/mision_refineria_metano.jpg',
+    description: 'Sistema de succión de hidrocarburos densos mediante turbocompresores térmicos para evitar la congelación en ductos de transporte.',
+    specs: 'Caudal 400 L/min · Temperatura de Bombeo: -160°C · Aislamiento Térmico Aerogel',
+  },
+  {
+    id: 'art-titan-drill',
+    title: 'Taladro de Perforación de Núcleo',
+    category: 'titan',
+    locationName: 'Puesto Avanzado Titán-IV',
+    sectorTag: 'MINERÍA // TALADRO SUBTERRÁNEO',
+    image: '/assets/mision_taladro_subterraneo.jpg',
+    description: 'Cabezal de perforación de diamante industrial térmico capaz de atravesar la gruesa corteza de hielo cristalino para extraer gas caliente.',
+    specs: 'Profundidad de Perforación: 180 metros · Par de Torsión: 85,000 Nm · Punta Diamante',
+  },
+  {
+    id: 'art-titan-heating',
+    title: 'Red Térmica Sub-Cero Radiante',
+    category: 'titan',
+    locationName: 'Puesto Avanzado Titán-IV',
+    sectorTag: 'SOPORTE VITAL // RADIADORES GEOTÉRMICOS',
+    image: '/assets/mision_calefaccion_termica.jpg',
+    description: 'Sistema de calefacción de emergencia con tuberías de vapor geotérmico y aislantes térmicos que mantienen habitables los laboratorios de Titán.',
+    specs: 'Estabilización Térmica: +21°C · Eficiencia de Ciclo: 96% · Circuito Redundante',
+  },
+
+  // ─── LABORATORIO SOLAR HELIOS-PRIME ──────────────────────────
+  {
+    id: 'art-helios-lab',
+    title: 'Laboratorio Solar Helios-Prime',
+    category: 'helios',
+    locationName: 'Laboratorio Helios-Prime',
+    sectorTag: 'OBSERVATORIO // CORONA SOLAR INTERIOR',
+    image: '/assets/helios.jpg',
+    description: 'Instalación de investigación en órbita solar hiperbólica extrema a tan solo 0.15 Unidades Astronómicas del Sol, diseñada para física coronal.',
+    specs: 'Distancia Solar 0.15 UA · Flujo Térmico: 450 kW/m² · Radiación Extrema Clase X',
+  },
+  {
+    id: 'art-helios-shield',
+    title: 'Escudo Térmico Cuántico de Grafeno',
+    category: 'helios',
+    locationName: 'Laboratorio Helios-Prime',
+    sectorTag: 'DEFENSA // DEFLEXIÓN RADIANTE',
+    image: '/assets/mision_escudo_termico_solar.jpg',
+    description: 'Paraguas deflector de grafeno y carburo de tántalo multicapa que desvía el 95% del calor y la radiación ionizante directa de la corona solar.',
+    specs: 'Deflexión Térmica: 95% · Resistencia Térmica: 2,800°C · Ángulo Dinámico',
+  },
+  {
+    id: 'art-helios-corona',
+    title: 'Colector de Plasma de la Corona Solar',
+    category: 'helios',
+    locationName: 'Laboratorio Helios-Prime',
+    sectorTag: 'ENERGÍA // INGESTA DE IONES SOLARES',
+    image: '/assets/mision_colector_corona_solar.jpg',
+    description: 'Embudo magnético de absorción de partículas ionizadas de helio solar que recarga directamente los acumuladores de energía de la estación.',
+    specs: 'Densidad de Flujo: 10^8 iones/cm³ · Carga Rápida Fotónica · Rendimiento 98%',
+  },
+  {
+    id: 'art-helios-neutrino',
+    title: 'Alineación de Matriz de Neutrinos',
+    category: 'helios',
+    locationName: 'Laboratorio Helios-Prime',
+    sectorTag: 'OBSERVACIÓN // TELESCOPIO CUÁNTICO',
+    image: '/assets/mision_matriz_neutrinos.jpg',
+    description: 'Detector de partículas subatómicas de neutrinos solares capaz de medir en tiempo real las reacciones de fusión en el centro del Sol.',
+    specs: 'Sensibilidad Cuántica: 99.8% · Resonadores Criogénicos · Enlace Terrestre Láser',
+  },
+
+  // ─── MAPA INTERPLANETARIO ─────────────────────────────────────
+  {
+    id: 'art-solar-system',
+    title: 'Carta de Navegación del Sistema Solar',
+    category: 'solar',
+    locationName: 'Sistema Solar Interior & Exterior',
+    sectorTag: 'ASTRONAVEGACIÓN // MAPA INTERPLANETARIO',
+    image: '/assets/sistema_solar.jpg',
+    description: 'Carta táctica de órbitas de Kepler y vectores de salto hiperespacial que conecta la Tierra, el Cinturón de Asteroides, Titán y la corona solar de Helios.',
+    specs: 'Escala 1:1,000,000,000 · Rutas de Salto Delta-V · Red de Balizas Cuánticas',
+  },
+];
