@@ -9,26 +9,24 @@ interface SectorBackdropProps {
 
 const SECTOR_IMAGE_PATHS: Record<SectorId, string[]> = {
   reactor: [
-    '/assets/Vista Nucleo Reactor.png',
-    '/assets/Vista Nucleo Reactor 1.png',
-    '/Vista Nucleo Reactor.png',
+    '/assets/Vista Nucleo Reactor.webp',
+    '/Vista Nucleo Reactor.webp',
   ],
   lab: [
-    '/assets/Vista Laboratorio de Datos.png',
-    '/assets/Vista Laboratorio de Datos 1.png',
-    '/Vista Laboratorio de Datos.png',
+    '/assets/Vista Laboratorio de Datos.webp',
+    '/Vista Laboratorio de Datos.webp',
   ],
   bridge: [
-    '/assets/Puente de Navegacion.jpg',
-    '/Puente de Navegacion.jpg',
+    '/assets/Puente de Navegacion.webp',
+    '/Puente de Navegacion.webp',
   ],
   shields: [
-    '/assets/Matriz de Escudos.jpg',
-    '/Matriz de Escudos.jpg',
+    '/assets/Matriz de Escudos.webp',
+    '/Matriz de Escudos.webp',
   ],
   drones: [
-    '/assets/Estacion de Drones.jpg',
-    '/Estacion de Drones.jpg',
+    '/assets/Estacion de Drones.webp',
+    '/Estacion de Drones.webp',
   ],
 };
 

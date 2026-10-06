@@ -29,7 +29,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
         <div className="flex flex-col items-center">
           <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl overflow-hidden border border-[#00f5ff]/40 shadow-[0_0_25px_rgba(0,245,255,0.3)] bg-[#010915] p-1.5 flex items-center justify-center">
             <img 
-              src="/assets/logo.jpeg" 
+              src="/assets/logo.webp" 
               alt="Logo" 
               className="w-full h-full object-contain rounded-xl"
             />

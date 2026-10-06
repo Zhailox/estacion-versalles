@@ -13,10 +13,9 @@ interface InteractiveBlueprintMapProps {
 }
 
 const MAP_IMAGE_SOURCES = [
-  '/assets/Mapa General Estación Versalles.png',
-  '/assets/Mapa General Estación Versalles 1.png',
-  '/assets/map.png',
-  '/Mapa General Estación Versalles.png',
+  '/assets/Mapa General Estación Versalles.webp',
+  '/Mapa General Estación Versalles.webp',
+  '/assets/map.webp',
 ];
 
 export const InteractiveBlueprintMap: React.FC<InteractiveBlueprintMapProps> = ({

@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Versalles Banner](public/assets/Mapa%20General%20Estaci%C3%B3n%20Versalles.png)
+![Versalles Banner](public/assets/Mapa%20General%20Estaci%C3%B3n%20Versalles.webp)
 
 [![React](https://img.shields.io/badge/React-19.1-blue.svg)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-8.3-646CFF.svg)](https://vitejs.dev)
