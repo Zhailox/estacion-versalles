@@ -61,25 +61,25 @@ export const HubScreen: React.FC<HubScreenProps> = ({
   const getSectorIcon = (id: SectorId) => {
     switch (id) {
       case 'reactor':
-        return <Zap className="w-5 h-5 text-amber-400" />;
+        return <Zap className="w-4 h-4 text-amber-400" />;
       case 'lab':
-        return <Cpu className="w-5 h-5 text-purple-400" />;
+        return <Cpu className="w-4 h-4 text-purple-400" />;
       case 'bridge':
-        return <Radar className="w-5 h-5 text-[#00f5ff]" />;
+        return <Radar className="w-4 h-4 text-[#00f5ff]" />;
       case 'shields':
-        return <Shield className="w-5 h-5 text-red-400" />;
+        return <Shield className="w-4 h-4 text-red-400" />;
       case 'drones':
-        return <Rocket className="w-5 h-5 text-emerald-400" />;
+        return <Rocket className="w-4 h-4 text-emerald-400" />;
     }
   };
 
   return (
-    <div className="min-h-screen w-full pt-18 pb-28 px-4 md:px-8 max-w-7xl mx-auto flex flex-col justify-between">
+    <div className="w-full pt-18 pb-20 px-3 md:px-6 max-w-6xl mx-auto flex flex-col gap-3">
       {/* Title & Hub Header */}
-      <div className="text-center my-4">
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00f5ff]/10 border border-[#00f5ff]/40 text-[#00f5ff] text-xs font-tech">
-            <Globe className="w-3.5 h-3.5 animate-spin" style={{ animationDuration: '24s' }} />
+      <div className="text-center my-1">
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-1">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#00f5ff]/10 border border-[#00f5ff]/35 text-[#00f5ff] text-[11px] font-tech">
+            <Globe className="w-3 h-3 animate-spin" style={{ animationDuration: '24s' }} />
             <span>{t.hub.locationBadge}: {currentDestination.name.toUpperCase()} · {currentDestination.celestialParent}</span>
           </div>
 
@@ -89,24 +89,24 @@ export const HubScreen: React.FC<HubScreenProps> = ({
                 soundFx.playBeep(850, 0.04);
                 onStartTutorial();
               }}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#00f5ff]/15 border border-[#00f5ff]/50 hover:bg-[#00f5ff]/25 text-[#00f5ff] text-xs font-tech font-bold cursor-pointer transition-colors shadow-[0_0_15px_rgba(0,245,255,0.25)]"
+              className="inline-flex items-center gap-1 px-3 py-0.5 rounded-full bg-[#00f5ff]/15 border border-[#00f5ff]/50 hover:bg-[#00f5ff]/25 text-[#00f5ff] text-[11px] font-tech font-bold cursor-pointer transition-colors shadow-[0_0_12px_rgba(0,245,255,0.25)]"
             >
-              <HelpCircle className="w-3.5 h-3.5 text-[#00f5ff] animate-pulse" />
+              <HelpCircle className="w-3 h-3 text-[#00f5ff] animate-pulse" />
               <span>{t.hub.howToPlayBtn}</span>
             </button>
           )}
         </div>
 
-        <h1 className="font-orbitron font-bold text-xl md:text-2xl tracking-widest text-white drop-shadow-[0_0_15px_rgba(0,245,255,0.4)]">
+        <h1 className="font-orbitron font-bold text-lg md:text-xl tracking-wider text-white drop-shadow-[0_0_12px_rgba(0,245,255,0.35)]">
           {currentDestination.name.toUpperCase()}
         </h1>
-        <p className="font-tech text-xs md:text-sm text-slate-400 mt-1 uppercase tracking-wider">
+        <p className="font-tech text-[11px] text-slate-400 uppercase tracking-wider line-clamp-1">
           {currentDestination.tacticalIntel}
         </p>
       </div>
 
       {/* Grid of Compartments for this location */}
-      <div id="hub-sectors-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 my-4">
+      <div id="hub-sectors-grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 my-1">
         {localizedSectors.map((sec) => {
           const mission = localizedMissions.find(m => m.id === sec.activeMissionId);
           const isCompleted = mission && state.completedMissionIds.includes(mission.id);
@@ -119,38 +119,38 @@ export const HubScreen: React.FC<HubScreenProps> = ({
                 soundFx.playWarp();
                 onEnterSector(sec.id);
               }}
-              className="group bg-[#020e1d]/90 border border-[#00f5ff]/25 hover:border-[#00f5ff] rounded-xl p-5 shadow-lg hover:shadow-[0_0_25px_rgba(0,245,255,0.3)] transition-all duration-300 cursor-pointer flex flex-col justify-between relative overflow-hidden backdrop-blur-md"
+              className="group bg-[#020e1d]/90 border border-[#00f5ff]/25 hover:border-[#00f5ff] rounded-lg p-3.5 shadow-md hover:shadow-[0_0_20px_rgba(0,245,255,0.25)] transition-all duration-300 cursor-pointer flex flex-col justify-between relative overflow-hidden backdrop-blur-md"
             >
               {/* Corner alert blinker if critical */}
               {sec.status === 'CRÍTICO' && (
-                <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-0.5 rounded bg-red-950/80 border border-red-500/60 text-red-400 font-tech text-[10px] animate-pulse">
-                  <AlertTriangle className="w-3 h-3 text-red-500" />
+                <div className="absolute top-2.5 right-2.5 flex items-center gap-1 px-1.5 py-0.5 rounded bg-red-950/80 border border-red-500/60 text-red-400 font-tech text-[9px] animate-pulse">
+                  <AlertTriangle className="w-2.5 h-2.5 text-red-500" />
                   <span>{t.common.critical}</span>
                 </div>
               )}
 
               {sec.status === 'ADVERTENCIA' && (
-                <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2 py-0.5 rounded bg-amber-950/80 border border-amber-500/60 text-amber-400 font-tech text-[10px]">
+                <div className="absolute top-2.5 right-2.5 flex items-center gap-1 px-1.5 py-0.5 rounded bg-amber-950/80 border border-amber-500/60 text-amber-400 font-tech text-[9px]">
                   <span>{t.common.warning}</span>
                 </div>
               )}
 
               <div>
-                <div className="flex items-center gap-2.5 mb-2">
-                  <div className="p-2 rounded-lg bg-slate-900 border border-slate-700 group-hover:border-[#00f5ff]/50 transition-colors">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <div className="p-1.5 rounded bg-slate-900 border border-slate-700 group-hover:border-[#00f5ff]/50 transition-colors">
                     {getSectorIcon(sec.id)}
                   </div>
                   <div>
-                    <span className="text-[10px] font-tech text-[#00f5ff] uppercase tracking-widest block">
+                    <span className="text-[9px] font-tech text-[#00f5ff] uppercase tracking-widest block">
                       {sec.tag}
                     </span>
-                    <h2 className="font-orbitron font-bold text-sm md:text-base text-white tracking-wide group-hover:text-[#00f5ff] transition-colors">
+                    <h2 className="font-orbitron font-bold text-xs md:text-sm text-white tracking-wide group-hover:text-[#00f5ff] transition-colors">
                       {sec.name}
                     </h2>
                   </div>
                 </div>
 
-                <p className="font-tech text-xs text-slate-400 line-clamp-2 mt-2 leading-relaxed">
+                <p className="font-tech text-[11px] text-slate-400 line-clamp-2 mt-1 leading-snug">
                   {sec.description}
                 </p>
 
@@ -162,47 +162,47 @@ export const HubScreen: React.FC<HubScreenProps> = ({
                       soundFx.playBeep(650, 0.04);
                       onSelectMission(mission.id);
                     }}
-                    className={`mt-4 p-2.5 rounded border flex items-center justify-between text-xs font-tech transition-colors cursor-pointer ${
+                    className={`mt-2.5 p-2 rounded border flex items-center justify-between text-xs font-tech transition-colors cursor-pointer ${
                       isCompleted 
                         ? 'bg-emerald-950/30 border-emerald-500/40 hover:border-emerald-400' 
                         : 'bg-[#010915] border-slate-800 hover:border-[#00f5ff]'
                     }`}
                   >
-                    <div className="flex items-center gap-2.5 truncate mr-2">
+                    <div className="flex items-center gap-2 truncate mr-2">
                       {missionImg ? (
                         <img 
                           src={missionImg} 
                           alt={mission.title} 
-                          className="w-9 h-9 rounded object-cover border border-[#00f5ff]/40 shrink-0" 
+                          className="w-7 h-7 rounded object-cover border border-[#00f5ff]/40 shrink-0" 
                         />
                       ) : isCompleted ? (
-                        <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
+                        <CheckCircle className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                       ) : (
-                        <Terminal className="w-4 h-4 text-amber-400 shrink-0" />
+                        <Terminal className="w-3.5 h-3.5 text-amber-400 shrink-0" />
                       )}
                       <div className="truncate">
-                        <span className="text-[10px] text-slate-500 block uppercase">
+                        <span className="text-[9px] text-slate-500 block uppercase">
                           {isCompleted ? t.hub.completedBadge : t.hub.activeMissionBadge}
                         </span>
-                        <span className="text-white font-semibold truncate block">
+                        <span className="text-white font-semibold text-[11px] truncate block">
                           {mission.title}
                         </span>
                       </div>
                     </div>
-                    <span className="text-[10px] text-[#00f5ff] font-orbitron font-bold shrink-0 ml-2">
+                    <span className="text-[9px] text-[#00f5ff] font-orbitron font-bold shrink-0 ml-1">
                       {isCompleted ? t.common.confirm : 'INICIAR →'}
                     </span>
                   </div>
                 )}
               </div>
 
-              <div className="mt-5 pt-3 border-t border-slate-800 flex items-center justify-between">
-                <span className="text-[11px] font-tech text-slate-500 uppercase">
+              <div className="mt-2.5 pt-2 border-t border-slate-800 flex items-center justify-between">
+                <span className="text-[10px] font-tech text-slate-500 uppercase">
                   {sec.hotspots.length} {t.common.operational}
                 </span>
-                <span className="font-orbitron text-xs text-[#00f5ff] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                <span className="font-orbitron text-[11px] text-[#00f5ff] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                   <span>{t.hub.enterSectorBtn}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <ArrowRight className="w-3 h-3" />
                 </span>
               </div>
             </div>
@@ -211,13 +211,13 @@ export const HubScreen: React.FC<HubScreenProps> = ({
       </div>
 
       {/* Global Mission Ledger Bar */}
-      <div id="hub-mission-ledger" className="mt-6 bg-[#010b17]/95 border border-[#00f5ff]/20 rounded-xl p-4 shadow-xl">
-        <div className="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
-          <span className="font-orbitron text-xs font-bold text-[#00f5ff] tracking-wider flex items-center gap-2">
-            <Terminal className="w-4 h-4 text-[#00f5ff]" />
+      <div id="hub-mission-ledger" className="mt-2 bg-[#010b17]/95 border border-[#00f5ff]/20 rounded-lg p-3 shadow-lg">
+        <div className="flex items-center justify-between border-b border-slate-800 pb-1.5 mb-2">
+          <span className="font-orbitron text-xs font-bold text-[#00f5ff] tracking-wider flex items-center gap-1.5">
+            <Terminal className="w-3.5 h-3.5 text-[#00f5ff]" />
             {t.common.missions} // {currentDestination.name.toUpperCase()}
           </span>
-          <span className="font-tech text-xs text-slate-400">
+          <span className="font-tech text-[11px] text-slate-400">
             {t.hub.completedBadge}: {locationMissions.filter(m => state.completedMissionIds.includes(m.id)).length} / {locationMissions.length}
           </span>
         </div>
@@ -232,21 +232,21 @@ export const HubScreen: React.FC<HubScreenProps> = ({
                   soundFx.playBeep(650, 0.03);
                   onSelectMission(m.id);
                 }}
-                className={`p-2.5 rounded border text-left flex items-center justify-between transition-colors cursor-pointer ${
+                className={`p-2 rounded border text-left flex items-center justify-between transition-colors cursor-pointer ${
                   isDone
                     ? 'bg-emerald-950/20 border-emerald-500/40 text-emerald-300'
                     : 'bg-[#010712] border-slate-800 hover:border-[#00f5ff]/40 text-slate-200'
                 }`}
               >
                 <div className="truncate pr-2">
-                  <div className="text-[10px] font-tech text-slate-400 uppercase">
+                  <div className="text-[9px] font-tech text-slate-400 uppercase">
                     {m.sectorId.toUpperCase()} · {m.difficulty}
                   </div>
                   <div className="font-orbitron text-xs font-semibold truncate">
                     {m.title}
                   </div>
                 </div>
-                <span className="text-[10px] font-tech font-bold uppercase shrink-0">
+                <span className="text-[9px] font-tech font-bold uppercase shrink-0">
                   {isDone ? 'RESUELTO ✓' : 'VER MISIÓN →'}
                 </span>
               </button>
