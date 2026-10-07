@@ -20,7 +20,7 @@ export const DilemmaModal: React.FC<DilemmaModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-2xl bg-[#031424] border-2 border-red-500 rounded-xl shadow-[0_0_50px_rgba(239,68,68,0.35)] flex flex-col overflow-hidden">
+      <div className="relative w-full max-w-2xl bg-[#031424] border-2 border-red-500 rounded-xl shadow-[0_0_50px_rgba(239,68,68,0.35)] flex flex-col max-h-[90vh] overflow-hidden">
         
         {/* Header Emergency Banner */}
         <div className="px-6 py-4 bg-red-950/90 border-b border-red-500/50 flex items-center justify-between">
@@ -45,7 +45,7 @@ export const DilemmaModal: React.FC<DilemmaModalProps> = ({
         </div>
 
         {/* Sender Info & Situation */}
-        <div className="p-6 space-y-5">
+        <div className="flex-1 min-h-0 p-6 space-y-5 overflow-y-auto">
           <div className="flex items-center justify-between border-b border-slate-800 pb-3 font-tech text-xs">
             <div className="text-slate-300">
               <span className="text-[#00f5ff] font-bold">{t.dilemma.officerLabel}: </span>

@@ -98,7 +98,7 @@ export const MapModal: React.FC<MapModalProps> = ({
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 overflow-y-auto p-4 md:p-5">
+        <div className="flex-1 min-h-0 overflow-y-auto p-4 md:p-5">
           {activeTab === 'blueprint' ? (
             <InteractiveBlueprintMap
               currentSectorId={currentSectorId}

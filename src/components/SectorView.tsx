@@ -114,19 +114,6 @@ export const SectorView: React.FC<SectorViewProps> = ({
             <Wrench className={`w-3.5 h-3.5 ${isRepaired ? 'text-emerald-400' : 'text-amber-400'}`} />
             <span>{isRepaired ? `${t.sector.diagnosticConsole}: ${t.common.nominal}` : t.sector.diagnosticConsole}</span>
           </button>
-
-          {/* Direct Terminal button */}
-          <button
-            onClick={() => {
-              soundFx.playCommandExecute();
-              onOpenTerminal();
-            }}
-            className="px-3 py-1.5 rounded-lg bg-[#00f5ff]/20 hover:bg-[#00f5ff]/30 border border-[#00f5ff]/40 text-[#00f5ff] text-xs font-orbitron font-bold tracking-wider flex items-center gap-2 shadow-lg backdrop-blur-md transition-all cursor-pointer hover:scale-105"
-            title={t.sector.terminalBtn}
-          >
-            <TerminalIcon className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">{t.sector.terminalBtn}</span>
-          </button>
         </div>
       </div>
 

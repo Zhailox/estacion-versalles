@@ -36,7 +36,7 @@ export const VitalsModal: React.FC<VitalsModalProps> = ({ state, onClose }) => {
         </div>
 
         {/* Content body */}
-        <div className="p-5 md:p-6 overflow-y-auto space-y-4">
+        <div className="flex-1 min-h-0 p-5 md:p-6 overflow-y-auto space-y-4">
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {/* Energy */}
             <div className="p-3.5 rounded-lg bg-[#010a17] border border-slate-800 flex flex-col gap-2">

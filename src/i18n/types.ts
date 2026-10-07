@@ -67,11 +67,14 @@ export interface TranslationDictionary {
     survivalBadge: string;
     crisisCountdown: string;
     languageToggleTooltip: string;
+    tutorialBtn: string;
+    tutorialTooltip: string;
   };
   hub: {
     locationBadge: string;
     travelBtn: string;
     archiveBtn: string;
+    howToPlayBtn: string;
     operationalSectors: string;
     activeMissionBadge: string;
     completedBadge: string;

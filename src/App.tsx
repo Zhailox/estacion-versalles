@@ -26,6 +26,7 @@ import { soundFx } from './audio/synth';
 import { musicEngine } from './audio/musicEngine';
 import { MultimediaArchiveModal } from './components/MultimediaArchiveModal';
 import { useLanguage } from './i18n/LanguageContext';
+import { startStationTutorial } from './utils/gameTutorial';
 
 const INITIAL_STATE: GameState = {
   currentScreen: 'intro',
@@ -630,12 +631,23 @@ export default function App() {
     setTimeout(() => setHudToast(null), 4000);
   }, [broadcastRadio, language]);
 
+  const handleStartTutorial = useCallback(() => {
+    if (state.currentScreen !== 'hub') {
+      setState(prev => ({ ...prev, currentScreen: 'hub' }));
+      setTimeout(() => {
+        startStationTutorial(language, (scr) => setState(prev => ({ ...prev, currentScreen: scr })));
+      }, 150);
+    } else {
+      startStationTutorial(language, (scr) => setState(prev => ({ ...prev, currentScreen: scr })));
+    }
+  }, [state.currentScreen, language]);
+
   const currentSectors = getSectorsForLocation(state.currentDestinationId);
   const currentSector = currentSectors.find(s => s.id === state.currentSectorId) || currentSectors[0];
 
   return (
     <div 
-      className={`min-h-screen w-full bg-[#020b18] text-[#c8e8f0] relative overflow-hidden ${state.crtEffect ? 'crt-overlay' : ''}`}
+      className={`min-h-screen w-full bg-[#020b18] text-[#c8e8f0] relative ${state.currentScreen === 'sector' ? 'overflow-hidden h-screen' : 'overflow-x-hidden min-h-screen'} ${state.crtEffect ? 'crt-overlay' : ''}`}
     >
 
       {/* Floating HUD Success Toast */}
@@ -699,6 +711,7 @@ export default function App() {
               return { ...prev, survivalMode: nextMode };
             });
           }}
+          onStartTutorial={handleStartTutorial}
         />
       )}
 
@@ -736,6 +749,7 @@ export default function App() {
               setArchiveInitialTab(tab);
               setIsArchiveOpen(true);
             }}
+            onStartTutorial={handleStartTutorial}
           />
         )}
 

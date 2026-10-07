@@ -13,7 +13,8 @@ import {
   Radio, 
   Clock,
   Sparkles,
-  Music
+  Music,
+  HelpCircle
 } from 'lucide-react';
 import { GameState } from '../types/game';
 import { soundFx } from '../audio/synth';
@@ -34,6 +35,7 @@ interface HeaderHUDProps {
   onToggleMusic: () => void;
   onToggleSurvivalMode: () => void;
   onOpenArchive?: (tab?: 'gallery' | 'jukebox') => void;
+  onStartTutorial?: () => void;
 }
 
 export const HeaderHUD: React.FC<HeaderHUDProps> = ({
@@ -49,6 +51,7 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
   onToggleMusic,
   onToggleSurvivalMode,
   onOpenArchive,
+  onStartTutorial,
 }) => {
   const { language, toggleLanguage, t, getLocalizedDestination, getLocalizedRank } = useLanguage();
 
@@ -66,7 +69,7 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
   return (
     <header className="fixed top-0 left-0 right-0 h-16 bg-[#020b18]/90 border-b border-[#00f5ff]/20 backdrop-blur-xl z-40 px-4 md:px-8 flex items-center justify-between transition-colors">
       {/* LEFT: Identity & Status */}
-      <div className="flex items-center gap-3">
+      <div id="hud-identity" className="flex items-center gap-3">
         <button
           onClick={() => {
             soundFx.playWarp();
@@ -93,7 +96,7 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
       </div>
 
       {/* CENTER: Navigation Pill Bar */}
-      <nav className="hidden lg:flex items-center bg-[#031526]/85 border border-[#00f5ff]/20 rounded-full px-2 py-1 shadow-lg backdrop-blur-md">
+      <nav id="hud-nav" className="hidden lg:flex items-center bg-[#031526]/85 border border-[#00f5ff]/20 rounded-full px-2 py-1 shadow-lg backdrop-blur-md">
         {/* Hub Screen */}
         <button
           onClick={() => {
@@ -194,6 +197,23 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
             <span>{t.common.archive}</span>
           </button>
         )}
+
+        <span className="h-4 w-px bg-slate-700/60 mx-1" />
+
+        {/* Interactive Step-by-Step Tutorial / Guide */}
+        {onStartTutorial && (
+          <button
+            onClick={() => {
+              soundFx.playBeep(850, 0.04);
+              onStartTutorial();
+            }}
+            className="px-2.5 py-1.5 rounded-full text-xs font-tech text-amber-300 hover:text-amber-200 hover:bg-amber-500/10 flex items-center gap-1.5 transition-colors cursor-pointer font-bold"
+            title={t.header.tutorialTooltip}
+          >
+            <HelpCircle className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+            <span>{t.header.tutorialBtn}</span>
+          </button>
+        )}
       </nav>
 
       {/* RIGHT: Actions, Timer & Controls */}
@@ -213,7 +233,7 @@ export const HeaderHUD: React.FC<HeaderHUDProps> = ({
         </div>
 
         {/* Compact Utility Control Group */}
-        <div className="flex items-center gap-1 bg-[#031526]/80 border border-[#00f5ff]/20 rounded-full p-1 shadow-inner">
+        <div id="hud-utilities" className="flex items-center gap-1 bg-[#031526]/80 border border-[#00f5ff]/20 rounded-full p-1 shadow-inner">
           {/* Language Switcher Button */}
           <button
             onClick={() => {

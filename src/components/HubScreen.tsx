@@ -18,7 +18,8 @@ import {
   Sparkles,
   Thermometer,
   Wind,
-  Music
+  Music,
+  HelpCircle
 } from 'lucide-react';
 import { soundFx } from '../audio/synth';
 import { getCustomBackground, subscribeToCustomAssets } from '../utils/customAssets';
@@ -30,8 +31,9 @@ interface HubScreenProps {
   state: GameState;
   onEnterSector: (id: SectorId) => void;
   onSelectMission: (missionId: string) => void;
-  onOpenSolarMap: () => void;
+  onOpenSolarMap?: () => void;
   onOpenArchive?: (tab?: 'gallery' | 'jukebox') => void;
+  onStartTutorial?: () => void;
 }
 
 export const HubScreen: React.FC<HubScreenProps> = ({
@@ -42,6 +44,7 @@ export const HubScreen: React.FC<HubScreenProps> = ({
   onSelectMission,
   onOpenSolarMap,
   onOpenArchive,
+  onStartTutorial,
 }) => {
   const { t, getLocalizedSector, getLocalizedMission, getLocalizedDestination } = useLanguage();
   const rawDestination = SOLAR_DESTINATIONS.find(d => d.id === state.currentDestinationId) || SOLAR_DESTINATIONS[0];
@@ -71,8 +74,8 @@ export const HubScreen: React.FC<HubScreenProps> = ({
   };
 
   return (
-    <div className="min-h-screen w-full pt-18 pb-20 px-4 md:px-8 max-w-7xl mx-auto flex flex-col justify-between">
-      {/* Title & Travel Button */}
+    <div className="min-h-screen w-full pt-18 pb-28 px-4 md:px-8 max-w-7xl mx-auto flex flex-col justify-between">
+      {/* Title & Hub Header */}
       <div className="text-center my-4">
         <div className="flex flex-wrap items-center justify-center gap-3 mb-2">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00f5ff]/10 border border-[#00f5ff]/40 text-[#00f5ff] text-xs font-tech">
@@ -80,27 +83,16 @@ export const HubScreen: React.FC<HubScreenProps> = ({
             <span>{t.hub.locationBadge}: {currentDestination.name.toUpperCase()} · {currentDestination.celestialParent}</span>
           </div>
 
-          <button
-            onClick={() => {
-              soundFx.playBeep(800, 0.04);
-              onOpenSolarMap();
-            }}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/50 hover:bg-amber-500/30 text-amber-300 text-xs font-tech font-bold cursor-pointer transition-colors shadow-[0_0_15px_rgba(251,191,36,0.2)]"
-          >
-            <Compass className="w-3.5 h-3.5" />
-            <span>{t.hub.travelBtn}</span>
-          </button>
-
-          {onOpenArchive && (
+          {onStartTutorial && (
             <button
               onClick={() => {
-                soundFx.playBeep(750, 0.04);
-                onOpenArchive('gallery');
+                soundFx.playBeep(850, 0.04);
+                onStartTutorial();
               }}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/20 border border-[#00f5ff]/40 hover:bg-cyan-500/30 text-[#00f5ff] text-xs font-tech font-bold cursor-pointer transition-colors shadow-[0_0_15px_rgba(0,245,255,0.2)]"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#00f5ff]/15 border border-[#00f5ff]/50 hover:bg-[#00f5ff]/25 text-[#00f5ff] text-xs font-tech font-bold cursor-pointer transition-colors shadow-[0_0_15px_rgba(0,245,255,0.25)]"
             >
-              <Music className="w-3.5 h-3.5" />
-              <span>{t.hub.archiveBtn}</span>
+              <HelpCircle className="w-3.5 h-3.5 text-[#00f5ff] animate-pulse" />
+              <span>{t.hub.howToPlayBtn}</span>
             </button>
           )}
         </div>
@@ -114,7 +106,7 @@ export const HubScreen: React.FC<HubScreenProps> = ({
       </div>
 
       {/* Grid of Compartments for this location */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 my-4">
+      <div id="hub-sectors-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 my-4">
         {localizedSectors.map((sec) => {
           const mission = localizedMissions.find(m => m.id === sec.activeMissionId);
           const isCompleted = mission && state.completedMissionIds.includes(mission.id);
@@ -219,7 +211,7 @@ export const HubScreen: React.FC<HubScreenProps> = ({
       </div>
 
       {/* Global Mission Ledger Bar */}
-      <div className="mt-6 bg-[#010b17]/95 border border-[#00f5ff]/20 rounded-xl p-4 shadow-xl">
+      <div id="hub-mission-ledger" className="mt-6 bg-[#010b17]/95 border border-[#00f5ff]/20 rounded-xl p-4 shadow-xl">
         <div className="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
           <span className="font-orbitron text-xs font-bold text-[#00f5ff] tracking-wider flex items-center gap-2">
             <Terminal className="w-4 h-4 text-[#00f5ff]" />
@@ -264,7 +256,7 @@ export const HubScreen: React.FC<HubScreenProps> = ({
       </div>
 
       {/* Bottom Vitals Strip */}
-      <div className="fixed bottom-0 left-0 right-0 h-10 bg-[#010814]/95 border-t border-[#00f5ff]/20 backdrop-blur-md px-6 flex items-center justify-between text-xs font-tech text-slate-300 z-30">
+      <div id="hub-vitals-strip" className="fixed bottom-0 left-0 right-0 h-10 bg-[#010814]/95 border-t border-[#00f5ff]/20 backdrop-blur-md px-6 flex items-center justify-between text-xs font-tech text-slate-300 z-30">
         <div className="flex items-center gap-4 md:gap-8 overflow-x-auto">
           <div className="flex items-center gap-1.5 whitespace-nowrap">
             <Zap className="w-3.5 h-3.5 text-amber-400" />

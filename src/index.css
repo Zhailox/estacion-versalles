@@ -69,18 +69,129 @@
   background-size: 400px 300px;
 }
 
-/* Custom scrollbar for terminals */
+/* Custom scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 245, 255, 0.4) rgba(2, 11, 24, 0.85);
+}
+
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(2, 11, 24, 0.8);
+  background: rgba(2, 11, 24, 0.85);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 245, 255, 0.3);
-  border-radius: 3px;
+  background: rgba(0, 245, 255, 0.35);
+  border-radius: 4px;
+  border: 1px solid rgba(0, 245, 255, 0.15);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 245, 255, 0.6);
+  background: rgba(0, 245, 255, 0.7);
+  box-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
 }
+
+/* Driver.js Cyberpunk Sci-Fi Theme Customization */
+.driver-popover {
+  background-color: rgba(3, 21, 38, 0.96) !important;
+  border: 1.5px solid rgba(0, 245, 255, 0.6) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 0 35px rgba(0, 245, 255, 0.25), 0 20px 45px rgba(0, 0, 0, 0.95) !important;
+  backdrop-filter: blur(16px) !important;
+  color: #c8e8f0 !important;
+  max-width: 400px !important;
+  padding: 18px 20px !important;
+  z-index: 1000000000 !important;
+}
+
+.driver-popover-title {
+  font-family: var(--font-display), 'Orbitron', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.06em !important;
+  color: #00f5ff !important;
+  text-transform: uppercase !important;
+  text-shadow: 0 0 10px rgba(0, 245, 255, 0.5) !important;
+  border-bottom: 1px solid rgba(0, 245, 255, 0.25) !important;
+  padding-bottom: 8px !important;
+  margin-bottom: 10px !important;
+}
+
+.driver-popover-description {
+  font-family: var(--font-mono), 'Share Tech Mono', monospace !important;
+  font-size: 12px !important;
+  line-height: 1.6 !important;
+  color: #cbd5e1 !important;
+}
+
+.driver-popover-progress-text {
+  font-family: var(--font-mono), monospace !important;
+  font-size: 11px !important;
+  color: #38bdf8 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+}
+
+.driver-popover-footer {
+  margin-top: 14px !important;
+  padding-top: 10px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.driver-popover-footer-btn {
+  font-family: var(--font-display), 'Orbitron', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  border-radius: 6px !important;
+  padding: 6px 14px !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+.driver-popover-next-btn {
+  background: #00f5ff !important;
+  color: #020b18 !important;
+  border: 1px solid #00f5ff !important;
+  box-shadow: 0 0 14px rgba(0, 245, 255, 0.45) !important;
+}
+
+.driver-popover-next-btn:hover {
+  background: #3effff !important;
+  box-shadow: 0 0 20px rgba(0, 245, 255, 0.8) !important;
+}
+
+.driver-popover-prev-btn {
+  background: rgba(15, 23, 42, 0.85) !important;
+  color: #94a3b8 !important;
+  border: 1px solid #334155 !important;
+}
+
+.driver-popover-prev-btn:hover {
+  color: #ffffff !important;
+  border-color: #00f5ff !important;
+}
+
+.driver-popover-close-btn {
+  color: #64748b !important;
+  font-size: 20px !important;
+}
+
+.driver-popover-close-btn:hover {
+  color: #00f5ff !important;
+}
+
+.driver-popover-arrow-side-top {
+  border-bottom-color: rgba(0, 245, 255, 0.8) !important;
+}
+.driver-popover-arrow-side-bottom {
+  border-top-color: rgba(0, 245, 255, 0.8) !important;
+}
+.driver-popover-arrow-side-left {
+  border-right-color: rgba(0, 245, 255, 0.8) !important;
+}
+.driver-popover-arrow-side-right {
+  border-left-color: rgba(0, 245, 255, 0.8) !important;
+}
+

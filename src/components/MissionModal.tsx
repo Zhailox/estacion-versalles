@@ -77,7 +77,7 @@ export const MissionModal: React.FC<MissionModalProps> = ({
         </div>
 
         {/* Content body */}
-        <div className="p-5 md:p-6 overflow-y-auto space-y-4">
+        <div className="flex-1 min-h-0 p-5 md:p-6 overflow-y-auto space-y-4">
           {/* Tactical Mission Illustration Banner */}
           {missionBg && (
             <div className="w-full h-44 md:h-52 rounded-lg overflow-hidden border border-[#00f5ff]/30 relative shadow-lg bg-[#010914]">

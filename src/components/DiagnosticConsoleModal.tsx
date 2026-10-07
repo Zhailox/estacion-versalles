@@ -198,7 +198,7 @@ export const DiagnosticConsoleModal: React.FC<DiagnosticConsoleModalProps> = ({
         </div>
 
         {/* Modal Body: Active Minigame */}
-        <div className="p-6 overflow-y-auto space-y-6">
+        <div className="flex-1 min-h-0 p-6 overflow-y-auto space-y-6">
           
           {/* Header Instruction Banner */}
           <div className="bg-[#021120] border border-[#00f5ff]/30 p-4 rounded-lg flex items-center justify-between text-xs font-tech">

@@ -65,7 +65,7 @@ export const InteractiveBlueprintMap: React.FC<InteractiveBlueprintMapProps> = (
   };
 
   return (
-    <div className="relative w-full h-[78vh] bg-[#020d18] rounded-lg overflow-hidden border border-[#00f5ff]/40 shadow-2xl flex flex-col">
+    <div className="relative w-full h-[70vh] min-h-[400px] bg-[#020d18] rounded-lg overflow-hidden border border-[#00f5ff]/40 shadow-2xl flex flex-col">
       {/* Top Bar Controls */}
       <div className="px-4 py-2.5 bg-[#031526] border-b border-[#00f5ff]/20 flex items-center justify-between z-30">
         <div className="flex items-center gap-2">

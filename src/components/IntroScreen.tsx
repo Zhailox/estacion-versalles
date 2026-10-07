@@ -17,7 +17,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
   const localizedCrew = getLocalizedCrew(CREW_MEMBERS);
 
   return (
-    <div className="relative min-h-screen w-full flex items-center justify-center bg-[#020b18] overflow-hidden select-none p-4">
+    <div className="relative min-h-screen w-full flex items-center justify-center bg-[#020b18] overflow-y-auto select-none p-4 py-8">
       {/* Background stars & nebula */}
       <div className="absolute inset-0 stars-layer opacity-40 pointer-events-none" />
       <div className="absolute inset-0 bg-radial from-transparent via-[#020b18]/60 to-[#020b18] pointer-events-none" />
