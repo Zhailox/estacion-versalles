@@ -43,6 +43,7 @@ export const UI_TRANSLATIONS: Record<'es' | 'fr', TranslationDictionary> = {
       crewMembersCount: '3 MIEMBROS',
       activeMissionsCount: 'ACTIVAS',
       startMission: 'INICIAR MISIÓN',
+      startTutorialBtn: 'TUTORIAL',
       startHint: 'Presiona INICIAR MISIÓN para acceder a la estación...',
       activeCrew: 'TRIPULACIÓN ACTIVA',
       copyright: 'Estación Versalles © 2026',
@@ -231,6 +232,7 @@ export const UI_TRANSLATIONS: Record<'es' | 'fr', TranslationDictionary> = {
       crewMembersCount: '3 MEMBRES',
       activeMissionsCount: 'ACTIVES',
       startMission: 'DÉMARRER LA MISSION',
+      startTutorialBtn: 'TUTORIEL',
       startHint: 'Appuyez sur DÉMARRER LA MISSION pour accéder à la station...',
       activeCrew: 'ÉQUIPAGE ACTIF',
       copyright: 'Station Versailles © 2026',
@@ -750,6 +752,26 @@ export const SOLAR_TRANSLATIONS: Record<'es' | 'fr', Record<string, { name: stri
 
 export const MISSION_TRANSLATIONS: Record<'es' | 'fr', Record<string, { title: string; conceptTaught: string; summary: string; briefing: string; objectives: string[]; solutionHint: string }>> = {
   es: {
+    'm-tutorial-boot': {
+      title: 'Misión 00: Enlace Auxiliar',
+      conceptTaught: 'Comandos UNIX (cat), Variables y Ejecución de Scripts',
+      summary: 'Inspecciona el registro boot_check.log en la terminal para hallar el código de enlace (7740) y ejecuta boot_sequence.py para sincronizar el relé auxiliar.',
+      briefing: `PROTOCOLO DE ENTRENAMIENTO:
+Antes de intervenir en las crisis principales de la estación, el Ingeniero Jefe Orlando Ortega preparó esta prueba rápida en el Núcleo del Reactor para repasar el ciclo operativo.
+
+FASE 1 [DIAGNÓSTICO EN TERMINAL]:
+Abre la Terminal UNIX y lee el archivo de arranque escribiendo (o pulsando el acceso rápido):
+  cat boot_check.log
+Ahí verás el CÓDIGO DE ENLACE AUXILIAR requerido (7740).
+
+FASE 2 [PROGRAMACIÓN Y EJECUCIÓN]:
+Cambia a la pestaña [EDITOR SCRIPT] donde está cargado 'boot_sequence.py'. Verifica que CODIGO_ENLACE sea 7740 y llama a iniciar_enlace_auxiliar(CODIGO_ENLACE), o usa la pestaña [BLOQUES VISUALES]. Pulsa [EJECUTAR] para completar la misión.`,
+      objectives: [
+        'Auditar boot_check.log en la consola UNIX usando el comando cat',
+        'Ejecutar iniciar_enlace_auxiliar(7740) desde el Editor de Script o Bloques',
+      ],
+      solutionHint: 'Ejecuta cat boot_check.log en la pestaña TERMINAL UNIX y luego ejecuta iniciar_enlace_auxiliar(7740) en la pestaña EDITOR SCRIPT.',
+    },
     'm0-solar-collectors': {
       title: 'Crisis de Colectores Solares Exteriores',
       conceptTaught: 'Navegación UNIX, Inspección de Logs y Bucles for in range(N)',
@@ -922,6 +944,26 @@ Una eyección de masa coronal ha golpeado la estación. El reactor se sobrecalie
     },
   },
   fr: {
+    'm-tutorial-boot': {
+      title: 'Mission 00 : Relais Auxiliaire',
+      conceptTaught: 'Commandes UNIX (cat), Variables et Exécution de Scripts',
+      summary: 'Inspectez le journal boot_check.log dans le terminal pour trouver le code de liaison (7740) et exécutez boot_sequence.py pour synchroniser le relais auxiliaire.',
+      briefing: `PROTOCOLE D'ENTRAÎNEMENT :
+Avant d'intervenir sur les crises principales de la station, l'Ingénieur en Chef Orlando Ortega a préparé ce test rapide dans le Noyau du Réacteur pour réviser le cycle opérationnel.
+
+PHASE 1 [DIAGNOSTIC AU TERMINAL] :
+Ouvrez le Terminal UNIX et lisez le fichier de démarrage en tapant (ou via l'accès rapide) :
+  cat boot_check.log
+Vous y trouverez le CODE DE LIAISON AUXILIAIRE requis (7740).
+
+PHASE 2 [PROGRAMMATION ET EXÉCUTION] :
+Basculez sur l'onglet [ÉDITEUR DE SCRIPT] où est chargé 'boot_sequence.py'. Vérifiez que CODIGO_ENLACE vaut 7740 et appelez iniciar_enlace_auxiliar(CODIGO_ENLACE), ou utilisez l'onglet [BLOCS VISUELS]. Cliquez sur [EXÉCUTER] pour terminer la mission.`,
+      objectives: [
+        'Auditer boot_check.log dans la console UNIX avec la commande cat',
+        'Exécuter iniciar_enlace_auxiliar(7740) depuis l\'Éditeur de Script ou les Blocs',
+      ],
+      solutionHint: 'Exécutez cat boot_check.log dans l\'onglet TERMINAL UNIX puis exécutez iniciar_enlace_auxiliar(7740) dans l\'onglet ÉDITEUR DE SCRIPT.',
+    },
     'm0-solar-collectors': {
       title: 'Crise des Collecteurs Solaires Extérieurs',
       conceptTaught: 'Navigation UNIX, Inspection de Logs et Boucles for in range(N)',

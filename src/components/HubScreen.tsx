@@ -108,13 +108,21 @@ export const HubScreen: React.FC<HubScreenProps> = ({
       {/* Grid of Compartments for this location */}
       <div id="hub-sectors-grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 my-1">
         {localizedSectors.map((sec) => {
-          const mission = localizedMissions.find(m => m.id === sec.activeMissionId);
+          const targetMissionId =
+            sec.id === 'reactor' &&
+            state.currentDestinationId === 'versalles' &&
+            state.activeMissionId === 'm-tutorial-boot' &&
+            !state.completedMissionIds.includes('m-tutorial-boot')
+              ? 'm-tutorial-boot'
+              : sec.activeMissionId;
+          const mission = localizedMissions.find(m => m.id === targetMissionId);
           const isCompleted = mission && state.completedMissionIds.includes(mission.id);
           const missionImg = mission ? ((mission.imageKey ? getCustomBackground(mission.imageKey) : null) || getCustomBackground(mission.id)) : null;
 
           return (
             <div
               key={sec.id}
+              id={`hub-sector-card-${sec.id}`}
               onClick={() => {
                 soundFx.playWarp();
                 onEnterSector(sec.id);

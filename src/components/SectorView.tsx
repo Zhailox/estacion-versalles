@@ -38,7 +38,13 @@ export const SectorView: React.FC<SectorViewProps> = ({
 }) => {
   const { t, getLocalizedSector, getLocalizedMission } = useLanguage();
   const sector = getLocalizedSector(rawSector);
-  const activeMissionId = sector.activeMissionId;
+  const activeMissionId =
+    sector.id === 'reactor' &&
+    state.currentDestinationId === 'versalles' &&
+    state.activeMissionId === 'm-tutorial-boot' &&
+    !state.completedMissionIds.includes('m-tutorial-boot')
+      ? 'm-tutorial-boot'
+      : sector.activeMissionId;
   const rawMission = activeMissionId ? MISSIONS.find(m => m.id === activeMissionId) : null;
   const activeMission = rawMission ? getLocalizedMission(rawMission) : null;
   const isRepaired = state.repairedSectors[sector.id];
@@ -100,6 +106,7 @@ export const SectorView: React.FC<SectorViewProps> = ({
         <div className="flex items-center gap-2">
           {/* Hardware Diagnostic Console button */}
           <button
+            id="sector-diagnostic-btn"
             onClick={() => {
               soundFx.playBeep(850, 0.05);
               onOpenDiagnostic(sector.id);
@@ -194,6 +201,7 @@ export const SectorView: React.FC<SectorViewProps> = ({
           <div className="flex items-center gap-2.5">
             {activeMission && (
               <button
+                id="sector-mission-btn"
                 onClick={() => {
                   soundFx.playCommandExecute();
                   onOpenMission(activeMission.id);
@@ -210,6 +218,7 @@ export const SectorView: React.FC<SectorViewProps> = ({
             )}
 
             <button
+              id="sector-open-terminal-btn"
               onClick={() => {
                 soundFx.playCommandExecute();
                 onOpenTerminal();

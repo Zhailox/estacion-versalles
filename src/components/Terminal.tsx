@@ -94,15 +94,23 @@ export function getLocationContext(state: GameState): LocationContextInfo {
   }
 
   // Versalles sectors
+  const isTutorialMission = state.activeMissionId === 'm-tutorial-boot' && !state.completedMissionIds.includes('m-tutorial-boot');
   let defaultDir = '/sys/power';
-  let defaultFile = '/sys/power/calibrate_solar.py';
-  let chips = [
-    { label: 'ls -la', cmd: 'ls -la /sys/power' },
-    { label: 'pwd', cmd: 'pwd' },
-    { label: 'cat solar_status.log', cmd: 'cat /sys/power/solar_status.log' },
-    { label: 'python calibrate_solar.py', cmd: 'python /sys/power/calibrate_solar.py' },
-    { label: 'cat alarms.log', cmd: 'cat /var/log/alarms.log' },
-  ];
+  let defaultFile = isTutorialMission ? '/sys/power/boot_sequence.py' : '/sys/power/calibrate_solar.py';
+  let chips = isTutorialMission
+    ? [
+        { label: 'cat boot_check.log', cmd: 'cat /sys/power/boot_check.log' },
+        { label: 'python boot_sequence.py', cmd: 'python /sys/power/boot_sequence.py' },
+        { label: 'ls -la', cmd: 'ls -la /sys/power' },
+        { label: 'cat solar_status.log', cmd: 'cat /sys/power/solar_status.log' },
+      ]
+    : [
+        { label: 'ls -la', cmd: 'ls -la /sys/power' },
+        { label: 'pwd', cmd: 'pwd' },
+        { label: 'cat solar_status.log', cmd: 'cat /sys/power/solar_status.log' },
+        { label: 'python calibrate_solar.py', cmd: 'python /sys/power/calibrate_solar.py' },
+        { label: 'cat alarms.log', cmd: 'cat /var/log/alarms.log' },
+      ];
 
   if (sectorId === 'drones') {
     defaultDir = '/sys/life_support';
@@ -147,7 +155,7 @@ export function getLocationContext(state: GameState): LocationContextInfo {
   }
 
   return {
-    locationKey: `versalles-${sectorId}`,
+    locationKey: `versalles-${sectorId}-${isTutorialMission ? 'tut' : 'std'}`,
     terminalTitle: 'ESTACIÓN VERSALLES',
     locationBadge: 'VERSALLES',
     userPrompt: 'cadete@versalles',
@@ -166,6 +174,8 @@ interface TerminalProps {
   onSaveFile?: (path: string, content: string) => void;
   onOpenHandbook?: () => void;
   initialSnippet?: string | null;
+  activeTabOverride?: 'cli' | 'script' | 'blocks' | null;
+  onActiveTabChange?: (tab: 'cli' | 'script' | 'blocks') => void;
 }
 
 export const Terminal: React.FC<TerminalProps> = ({
@@ -177,10 +187,24 @@ export const Terminal: React.FC<TerminalProps> = ({
   onSaveFile,
   onOpenHandbook,
   initialSnippet,
+  activeTabOverride,
+  onActiveTabChange,
 }) => {
   const { t } = useLanguage();
   const locContext = getLocationContext(state);
-  const [activeTab, setActiveTab] = useState<'cli' | 'script' | 'blocks'>('cli');
+  const [activeTab, setActiveTabState] = useState<'cli' | 'script' | 'blocks'>('cli');
+
+  const setActiveTab = (tab: 'cli' | 'script' | 'blocks') => {
+    setActiveTabState(tab);
+    onActiveTabChange?.(tab);
+  };
+
+  useEffect(() => {
+    if (activeTabOverride) {
+      setActiveTabState(activeTabOverride);
+      onActiveTabChange?.(activeTabOverride);
+    }
+  }, [activeTabOverride]);
   const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage>('python');
   const [currentFilePath, setCurrentFilePath] = useState<string>(locContext.defaultFile);
   const [cliInput, setCliInput] = useState('');
@@ -379,6 +403,7 @@ export const Terminal: React.FC<TerminalProps> = ({
           {/* Mode switch tabs */}
           <div className="flex items-center bg-[#010d1a] border border-[#00f5ff]/20 rounded p-0.5 ml-2 md:ml-4">
             <button
+              id="terminal-tab-cli"
               onClick={() => {
                 soundFx.playBeep(600, 0.03);
                 setActiveTab('cli');
@@ -393,6 +418,7 @@ export const Terminal: React.FC<TerminalProps> = ({
               {t.terminal.tabTerminal}
             </button>
             <button
+              id="terminal-tab-script"
               onClick={() => {
                 soundFx.playBeep(600, 0.03);
                 setActiveTab('script');
@@ -407,6 +433,7 @@ export const Terminal: React.FC<TerminalProps> = ({
               {t.terminal.tabEditor}
             </button>
             <button
+              id="terminal-tab-blocks"
               onClick={() => {
                 soundFx.playBeep(600, 0.03);
                 setActiveTab('blocks');
@@ -477,7 +504,7 @@ export const Terminal: React.FC<TerminalProps> = ({
       </div>
 
       {/* Quick Action Chips Bar */}
-      <div className="bg-[#020e1c] border-b border-[#00f5ff]/15 px-4 py-1.5 flex items-center gap-2 overflow-x-auto text-xs font-tech text-slate-300">
+      <div id="terminal-quick-chips" className="bg-[#020e1c] border-b border-[#00f5ff]/15 px-4 py-1.5 flex items-center gap-2 overflow-x-auto text-xs font-tech text-slate-300">
         <span className="text-[10px] text-slate-500 uppercase tracking-widest shrink-0">
           {t.terminal.quickCommands}:
         </span>
@@ -518,7 +545,7 @@ export const Terminal: React.FC<TerminalProps> = ({
           </div>
 
           {/* Command Input Prompt with Real UNIX Directory Display */}
-          <div className="border-t border-[#00f5ff]/20 bg-[#020b18] px-4 py-2.5 flex items-center gap-2">
+          <div id="terminal-cli-input" className="border-t border-[#00f5ff]/20 bg-[#020b18] px-4 py-2.5 flex items-center gap-2">
             <span className="font-mono text-xs md:text-sm text-emerald-400 select-none whitespace-nowrap">
               {locContext.userPrompt}:[<span className="text-[#00f5ff]">{currentDir}</span>]$
             </span>
@@ -528,7 +555,7 @@ export const Terminal: React.FC<TerminalProps> = ({
               value={cliInput}
               onChange={e => setCliInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="ls, cd /sys/power, cat solar_status.log, python calibrate_solar.py..."
+              placeholder="ls, cd /sys/power, cat boot_check.log, cat solar_status.log..."
               className="flex-1 bg-transparent border-none outline-none font-mono text-xs md:text-sm text-white placeholder:text-slate-600 caret-[#00f5ff]"
               autoFocus
               spellCheck={false}
@@ -591,6 +618,7 @@ export const Terminal: React.FC<TerminalProps> = ({
               </button>
 
               <button
+                id="terminal-run-script-btn"
                 onClick={handleRunScript}
                 className="px-4 py-1 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-orbitron font-bold text-xs rounded transition-all flex items-center gap-1.5 shadow-[0_0_12px_rgba(57,255,20,0.4)] cursor-pointer"
               >
@@ -676,6 +704,12 @@ export const Terminal: React.FC<TerminalProps> = ({
               </>
             ) : selectedLanguage === 'python' ? (
               <>
+                <button
+                  onClick={() => handleLoadVFSFile('/sys/power/boot_sequence.py')}
+                  className="px-2 py-0.5 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/50 cursor-pointer font-bold"
+                >
+                  Abrir Misión 00: Enlace Auxiliar (.py)
+                </button>
                 <button
                   onClick={() => handleLoadVFSFile('/sys/power/calibrate_solar.py')}
                   className="px-2 py-0.5 rounded bg-slate-800/80 hover:bg-slate-700 text-cyan-300 border border-slate-700 cursor-pointer"
@@ -823,6 +857,33 @@ export const Terminal: React.FC<TerminalProps> = ({
 
             {/* Grid of Blocks */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Block 0: Tutorial Mission 00 Auxiliary Relay */}
+              {(blockFilter === 'all' || blockFilter === 'versalles' || (blockFilter === 'current' && locContext.locationKey.startsWith('versalles'))) && (
+                <div className="bg-[#020e1d] border border-amber-400/50 rounded-lg p-4 space-y-3 hover:border-amber-400 transition-colors shadow-[0_0_15px_rgba(251,191,36,0.12)]">
+                  <div className="flex items-center justify-between">
+                    <span className="font-orbitron text-xs font-bold text-amber-300">MISIÓN 00: ENLACE AUXILIAR</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono">Código 7740</span>
+                  </div>
+                  <p className="text-xs font-tech text-slate-400">
+                    Sincroniza el relé de telemetría auxiliar del Reactor introduciendo el código de verificación 7740.
+                  </p>
+                  <button
+                    onClick={() => {
+                      soundFx.playCommandExecute();
+                      onExecuteCommand(
+                        JSON.stringify([{ type: 'tutorial_relay', code: 7740 }]),
+                        true,
+                        'blocks'
+                      );
+                      setActiveTab('cli');
+                    }}
+                    className="w-full py-2 rounded bg-amber-500/25 hover:bg-amber-500/35 border border-amber-400/60 text-amber-200 font-orbitron text-xs font-bold cursor-pointer transition-colors"
+                  >
+                    ENSAMBLAR BLOQUE ENLACE (7740)
+                  </button>
+                </div>
+              )}
+
               {/* Block 1: Versalles Solar Panels */}
               {(blockFilter === 'all' || blockFilter === 'versalles' || (blockFilter === 'current' && locContext.locationKey.startsWith('versalles'))) && (
                 <div className="bg-[#020e1d] border border-cyan-500/30 rounded-lg p-4 space-y-3 hover:border-cyan-500/60 transition-colors">

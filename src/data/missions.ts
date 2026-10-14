@@ -6,6 +6,58 @@ export function getMissionsForLocation(missions: Mission[], locationId: string):
 
 export const MISSIONS: Mission[] = [
   // ══════════════════════════════════════════════════════════════
+  // MISIÓN 00: ENTRENAMIENTO (ESTACIÓN VERSALLES)
+  // ══════════════════════════════════════════════════════════════
+  {
+    id: 'm-tutorial-boot',
+    locationId: 'versalles',
+    sectorId: 'reactor',
+    imageKey: 'mision_plasma_reactor',
+    title: 'Misión 00: Enlace Auxiliar',
+    category: 'VARIABLES_Y_CALIBRACION',
+    difficulty: 'BÁSICO',
+    conceptTaught: 'Comandos UNIX (cat), Variables y Ejecución de Scripts',
+    summary: 'Inspecciona el registro boot_check.log en la terminal para hallar el código de enlace (7740) y ejecuta boot_sequence.py para sincronizar el relé auxiliar.',
+    briefing: `PROTOCOLO DE ENTRENAMIENTO:
+Antes de intervenir en las crisis principales de la estación, el Ingeniero Jefe Orlando Ortega preparó esta prueba rápida en el Núcleo del Reactor para repasar el ciclo operativo.
+
+FASE 1 [DIAGNÓSTICO EN TERMINAL]:
+Abre la Terminal UNIX y lee el archivo de arranque escribiendo (o pulsando el acceso rápido):
+  cat boot_check.log
+Ahí verás el CÓDIGO DE ENLACE AUXILIAR requerido (7740).
+
+FASE 2 [PROGRAMACIÓN Y EJECUCIÓN]:
+Cambia a la pestaña [EDITOR SCRIPT] donde está cargado 'boot_sequence.py'. Verifica que CODIGO_ENLACE sea 7740 y llama a iniciar_enlace_auxiliar(CODIGO_ENLACE), o usa la pestaña [BLOQUES VISUALES]. Pulsa [EJECUTAR] para completar la misión.`,
+    objectives: [
+      'Auditar boot_check.log en la consola UNIX usando el comando cat',
+      'Ejecutar iniciar_enlace_auxiliar(7740) desde el Editor de Script o Bloques',
+    ],
+    initialCode: `# MISIÓN 00: Enlace Auxiliar
+# 1. Lee boot_check.log en la terminal con: cat boot_check.log
+# 2. Asegúrate de que CODIGO_ENLACE tenga el valor 7740 y pulsa [EJECUTAR PYTHON]
+
+CODIGO_ENLACE = 7740
+
+iniciar_enlace_auxiliar(CODIGO_ENLACE)
+print(">> Enlace auxiliar sincronizado.")
+`,
+    solutionHint: 'Ejecuta cat boot_check.log en la pestaña TERMINAL UNIX y luego ejecuta iniciar_enlace_auxiliar(7740) en la pestaña EDITOR SCRIPT.',
+    availableCommands: ['cat boot_check.log', 'python boot_sequence.py', 'ls', 'AYUDA()'],
+    rewardXP: 100,
+    testCases: [
+      {
+        description: 'Auditar el registro de arranque (cat boot_check.log) en la consola UNIX',
+        check: (state) => state.tutorialState?.logInspected === true,
+        hint: 'Escribe cat boot_check.log en la terminal o pulsa su botón de acceso rápido.',
+      },
+      {
+        description: 'Sincronizar el relé auxiliar ejecutando iniciar_enlace_auxiliar(7740)',
+        check: (state) => state.tutorialState?.relaySynced === true,
+        hint: 'Ve a la pestaña [EDITOR SCRIPT] y pulsa [EJECUTAR PYTHON].',
+      },
+    ],
+  },
+  // ══════════════════════════════════════════════════════════════
   // NIVEL 1: FUNDAMENTOS Y ENTORNO UNIX (ESTACIÓN VERSALLES)
   // ══════════════════════════════════════════════════════════════
   {

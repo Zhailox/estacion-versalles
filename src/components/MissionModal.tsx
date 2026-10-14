@@ -128,7 +128,7 @@ export const MissionModal: React.FC<MissionModalProps> = ({
           </div>
 
           {/* Objectives & Live Status Checklist */}
-          <div>
+          <div id="mission-objectives-list">
             <div className="text-xs font-orbitron font-bold text-[#00f5ff] uppercase tracking-wider mb-2">
               {t.missionModal.operationalObjectives}
             </div>
@@ -188,6 +188,7 @@ export const MissionModal: React.FC<MissionModalProps> = ({
               {t.common.close}
             </button>
             <button
+              id="mission-open-terminal-btn"
               onClick={() => {
                 soundFx.playCommandExecute();
                 onOpenTerminal();

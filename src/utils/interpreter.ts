@@ -40,7 +40,7 @@ export function executeCommandOrScript(
   }
 
   // If it's a multi-line script or explicitly identified as script block
-  if (isMultiLineScript || (trimmed.includes('\n') && (
+  if (isMultiLineScript || trimmed.includes('iniciar_enlace_auxiliar') || (trimmed.includes('\n') && (
     trimmed.includes('for ') || 
     trimmed.includes('def ') || 
     trimmed.includes('class ') || 
@@ -89,6 +89,7 @@ export function executeCommandOrScript(
         hyperionState: { ...nextState.hyperionState, ...(execResult.stateChanges.hyperionState || {}) },
         titanState: { ...nextState.titanState, ...(execResult.stateChanges.titanState || {}) },
         heliosState: { ...nextState.heliosState, ...(execResult.stateChanges.heliosState || {}) },
+        tutorialState: { ...(nextState.tutorialState || { logInspected: false, relaySynced: false }), ...(execResult.stateChanges.tutorialState || {}) },
       };
     }
 
@@ -276,6 +277,12 @@ export function executeCommandOrScript(
     if (!file) {
       lines.push({ text: `cat: ${args[0]}: No existe el fichero o el directorio`, type: 'error' });
     } else {
+      if (displayPath.includes('boot_check.log') || args[0].includes('boot_check.log')) {
+        nextState.tutorialState = {
+          ...(nextState.tutorialState || { logInspected: false, relaySynced: false }),
+          logInspected: true,
+        };
+      }
       lines.push({ text: `─── ${displayPath} (${file.size} bytes) ───`, type: 'system' });
       file.content.split('\n').forEach(line => {
         lines.push({ text: line, type: 'ok' });
@@ -297,6 +304,12 @@ export function executeCommandOrScript(
     if (!file) {
       lines.push({ text: `grep: ${args[1]}: No existe el fichero`, type: 'error' });
     } else {
+      if (targetResolved.includes('boot_check.log') || args[1].includes('boot_check.log')) {
+        nextState.tutorialState = {
+          ...(nextState.tutorialState || { logInspected: false, relaySynced: false }),
+          logInspected: true,
+        };
+      }
       const fileLines = file.content.split('\n');
       const matches = fileLines.filter(l => l.toLowerCase().includes(pattern.toLowerCase()));
       if (matches.length === 0) {
@@ -398,6 +411,7 @@ export function executeCommandOrScript(
         hyperionState: { ...nextState.hyperionState, ...(execResult.stateChanges.hyperionState || {}) },
         titanState: { ...nextState.titanState, ...(execResult.stateChanges.titanState || {}) },
         heliosState: { ...nextState.heliosState, ...(execResult.stateChanges.heliosState || {}) },
+        tutorialState: { ...(nextState.tutorialState || { logInspected: false, relaySynced: false }), ...(execResult.stateChanges.tutorialState || {}) },
       };
     }
     return { updatedState: nextState, outputLines: lines };

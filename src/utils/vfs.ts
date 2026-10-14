@@ -27,6 +27,35 @@ export function createInitialVFS(): VFSDirectory {
             type: 'dir',
             name: 'power',
             children: {
+              'boot_check.log': {
+                type: 'file',
+                name: 'boot_check.log',
+                size: 265,
+                updatedAt: '2026-10-05 08:25:00',
+                content: `[DIAGNÓSTICO - RELÉ AUXILIAR DE TELEMETRÍA]
+ESTADO DEL ENLACE AUXILIAR: DESCONECTADO
+CÓDIGO DE ENLACE AUXILIAR REQUERIDO: 7740
+
+ACCIÓN REQUERIDA:
+1. Abre la pestaña [EDITOR SCRIPT] en la terminal.
+2. En boot_sequence.py, verifica CODIGO_ENLACE = 7740
+3. Ejecuta iniciar_enlace_auxiliar(CODIGO_ENLACE) pulsando [EJECUTAR].`
+              },
+              'boot_sequence.py': {
+                type: 'file',
+                name: 'boot_sequence.py',
+                size: 310,
+                updatedAt: '2026-10-05 08:26:00',
+                content: `# MISIÓN 00: Enlace Auxiliar
+# 1. Lee boot_check.log en la terminal con: cat boot_check.log
+# 2. Verifica que CODIGO_ENLACE sea 7740 y pulsa [EJECUTAR PYTHON]
+
+CODIGO_ENLACE = 7740
+
+iniciar_enlace_auxiliar(CODIGO_ENLACE)
+print(">> Enlace auxiliar sincronizado.")
+`
+              },
               'solar_status.log': {
                 type: 'file',
                 name: 'solar_status.log',

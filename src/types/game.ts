@@ -170,5 +170,9 @@ export interface GameState {
     coronaCollectorOnline: boolean;
     quantumNeutrinoAligned: boolean;
   };
+  tutorialState?: {
+    logInspected: boolean;
+    relaySynced: boolean;
+  };
 }
 

@@ -72,6 +72,7 @@ function runPythonScript(code: string, state: GameState): ScriptExecutionOutput 
     hyperionState: state.hyperionState ? { ...state.hyperionState } : { ionCannonCharged: false, militaryFirewallActive: false, fightersLaunched: false },
     titanState: state.titanState ? { ...state.titanState } : { methanePumpsActive: false, cryoDrillDepth: 0, thermalHeatingOnline: false },
     heliosState: state.heliosState ? { ...state.heliosState } : { solarShieldDeflection: 40, coronaCollectorOnline: false, quantumNeutrinoAligned: false },
+    tutorialState: state.tutorialState ? { ...state.tutorialState } : { logInspected: false, relaySynced: false },
   };
 
   const lines = code.split('\n');
@@ -344,6 +345,21 @@ function runPythonScript(code: string, state: GameState): ScriptExecutionOutput 
       stateChanges.vitals.activeThreatLevel = 'NOMINAL';
       logs.push(`[DIAGNÓSTICO GLOBAL] Todos los indicadores de crisis extinguidos con éxito ✓`);
     },
+    iniciar_enlace_auxiliar: (codigo: number = 7740) => {
+      steps++;
+      if (!stateChanges.tutorialState) {
+        stateChanges.tutorialState = { logInspected: true, relaySynced: false };
+      }
+      if (Number(codigo) === 7740) {
+        stateChanges.tutorialState.logInspected = true;
+        stateChanges.tutorialState.relaySynced = true;
+        stateChanges.vitals.energy = Math.min(100, stateChanges.vitals.energy + 12);
+        stateChanges.vitals.comms = 100;
+        logs.push(`[RELÉ AUXILIAR] Código de enlace #${codigo} verificado. Telemetría auxiliar SINCRONIZADA AL 100% ✓`);
+      } else {
+        logs.push(`[RELÉ AUXILIAR] ⚠ Código #${codigo} incorrecto. Revisa boot_check.log (Código requerido: 7740).`);
+      }
+    },
     // Constants
     CAMPO_MAGNETICO: 'CAMPO_MAGNETICO',
     SISTEMA_ESTABILIZADOR: 'SISTEMA_ESTABILIZADOR',
@@ -611,7 +627,10 @@ function runBlockScript(blockConfigJson: string, state: GameState): ScriptExecut
     let generatedPython = '';
     if (Array.isArray(parsed)) {
       for (const block of parsed) {
-        if (block.type === 'align_solar') {
+        if (block.type === 'tutorial_relay') {
+          const code = typeof block.code === 'number' ? block.code : 7740;
+          generatedPython += `iniciar_enlace_auxiliar(${code})\n`;
+        } else if (block.type === 'align_solar') {
           const count = typeof block.count === 'number' ? block.count : 8;
           const angle = typeof block.angle === 'number' ? block.angle : 47.5;
           generatedPython += `for i in range(${count}):\n    ajustar_panel_solar(i, ${angle})\n`;

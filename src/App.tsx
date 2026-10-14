@@ -26,7 +26,8 @@ import { soundFx } from './audio/synth';
 import { musicEngine } from './audio/musicEngine';
 import { MultimediaArchiveModal } from './components/MultimediaArchiveModal';
 import { useLanguage } from './i18n/LanguageContext';
-import { startStationTutorial } from './utils/gameTutorial';
+import { TUTORIAL_STORAGE_KEY } from './utils/gameTutorial';
+import { ImmersiveTutorialOverlay, TutorialAutoAction } from './components/ImmersiveTutorialOverlay';
 
 const INITIAL_STATE: GameState = {
   currentScreen: 'intro',
@@ -118,6 +119,10 @@ const INITIAL_STATE: GameState = {
     coronaCollectorOnline: false,
     quantumNeutrinoAligned: false,
   },
+  tutorialState: {
+    logInspected: false,
+    relaySynced: false,
+  },
 };
 
 export default function App() {
@@ -141,6 +146,12 @@ export default function App() {
   const [isArchiveOpen, setIsArchiveOpen] = useState(false);
   const [archiveInitialTab, setArchiveInitialTab] = useState<'gallery' | 'jukebox'>('gallery');
   const [pendingSnippet, setPendingSnippet] = useState<string | null>(null);
+
+  // Immersive Tutorial states
+  const [isTutorialActive, setIsTutorialActive] = useState(false);
+  const [tutorialStepIndex, setTutorialStepIndex] = useState(0);
+  const [terminalActiveTab, setTerminalActiveTab] = useState<'cli' | 'script' | 'blocks'>('cli');
+  const [terminalTabOverride, setTerminalTabOverride] = useState<'cli' | 'script' | 'blocks' | null>(null);
 
   // Track change listener: notify user and sync playback state
   useEffect(() => {
@@ -205,7 +216,7 @@ export default function App() {
     });
   }, [language]);
 
-  // Global Mission Timer & Pressure Countdown loop
+  // Global Mission Timer & Pressure Countdown loop (paused during interactive tutorial)
   useEffect(() => {
     if (state.currentScreen === 'intro') return;
 
@@ -214,7 +225,7 @@ export default function App() {
         const nextTime = prev.missionTime + 1;
         let nextPressure = prev.pressureTimer;
 
-        if (prev.isTimerRunning && nextPressure !== null && nextPressure > 0) {
+        if (!isTutorialActive && prev.isTimerRunning && nextPressure !== null && nextPressure > 0) {
           nextPressure -= 1;
           if (nextPressure <= 15 && nextPressure > 0 && nextPressure % 4 === 0) {
             soundFx.playAlarmPulse();
@@ -233,7 +244,7 @@ export default function App() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [state.currentScreen]);
+  }, [state.currentScreen, isTutorialActive]);
 
   // Rank calculation based on XP
   useEffect(() => {
@@ -632,15 +643,122 @@ export default function App() {
   }, [broadcastRadio, language]);
 
   const handleStartTutorial = useCallback(() => {
-    if (state.currentScreen !== 'hub') {
-      setState(prev => ({ ...prev, currentScreen: 'hub' }));
-      setTimeout(() => {
-        startStationTutorial(language, (scr) => setState(prev => ({ ...prev, currentScreen: scr })));
-      }, 150);
-    } else {
-      startStationTutorial(language, (scr) => setState(prev => ({ ...prev, currentScreen: scr })));
+    soundFx.playBeep(880, 0.08);
+    setActiveMissionModal(null);
+    setIsTerminalOpen(false);
+    setDiagnosticModalSector(null);
+    setTerminalActiveTab('cli');
+    setTerminalTabOverride('cli');
+    setTutorialStepIndex(0);
+    setIsTutorialActive(true);
+
+    setState(prev => ({
+      ...prev,
+      currentScreen: 'hub',
+      currentDestinationId: 'versalles',
+      currentSectorId: 'reactor',
+      activeMissionId: 'm-tutorial-boot',
+      completedMissionIds: prev.completedMissionIds.filter(id => id !== 'm-tutorial-boot'),
+      currentDirectory: '/sys/power',
+      editorFile: '/sys/power/boot_sequence.py',
+      tutorialState: {
+        logInspected: false,
+        relaySynced: false,
+      },
+    }));
+
+    broadcastRadio(
+      'Cap. Juan Piña',
+      language === 'fr'
+        ? 'Tutoriel activé ! Suivez les instructions de l\'équipage pour accomplir la Mission 00.'
+        : '¡Tutorial activado! Sigue las instrucciones de la tripulación para completar la Misión 00.',
+      'COMMAND-01'
+    );
+  }, [broadcastRadio, language]);
+
+  const handleCompleteTutorial = useCallback(() => {
+    try {
+      localStorage.setItem(TUTORIAL_STORAGE_KEY, 'true');
+    } catch {}
+    setIsTutorialActive(false);
+    setIsTerminalOpen(false);
+    setActiveMissionModal(null);
+    setState(prev => ({
+      ...prev,
+      activeMissionId: prev.activeMissionId === 'm-tutorial-boot' ? 'm0-solar-collectors' : prev.activeMissionId,
+      editorFile: '/sys/power/calibrate_solar.py',
+      pressureTimer: 180,
+      pressureTimerMax: 180,
+    }));
+    setHudToast({
+      message: language === 'fr' ? 'ENTRAÎNEMENT TERMINÉ !' : '¡ENTRENAMIENTO COMPLETADO!',
+      sub: language === 'fr'
+        ? 'MISSION PRINCIPALE ACTIVE : COLLECTEURS SOLAIRES'
+        : 'MISIÓN PRINCIPAL ACTIVA: COLECTORES SOLARES',
+    });
+    setTimeout(() => setHudToast(null), 4500);
+  }, [language]);
+
+  const handleSkipTutorial = useCallback(() => {
+    try {
+      localStorage.setItem(TUTORIAL_STORAGE_KEY, 'true');
+    } catch {}
+    setIsTutorialActive(false);
+    setState(prev => ({
+      ...prev,
+      activeMissionId: prev.activeMissionId === 'm-tutorial-boot' ? 'm0-solar-collectors' : prev.activeMissionId,
+      editorFile: '/sys/power/calibrate_solar.py',
+    }));
+  }, []);
+
+  const handleTutorialStepChange = useCallback((nextStep: number) => {
+    setTutorialStepIndex(nextStep);
+    // When advancing to Step 10 (Hardware Diagnostic Console on the Sector screen), close Terminal so the sector button is visible
+    if (nextStep === 9) {
+      setIsTerminalOpen(false);
+      setActiveMissionModal(null);
     }
-  }, [state.currentScreen, language]);
+  }, []);
+
+  const handleTutorialAutoAction = useCallback(
+    (action: TutorialAutoAction) => {
+      switch (action) {
+        case 'enter_reactor':
+          handleEnterSector('reactor');
+          break;
+        case 'open_mission_00':
+          handleSelectMission('m-tutorial-boot');
+          break;
+        case 'open_terminal':
+          setActiveMissionModal(null);
+          setTerminalTabOverride('cli');
+          setIsTerminalOpen(true);
+          break;
+        case 'run_cat_boot_log':
+          setIsTerminalOpen(true);
+          setTerminalTabOverride('cli');
+          handleExecuteCommand('cat /sys/power/boot_check.log', false);
+          break;
+        case 'switch_to_script_tab':
+          setIsTerminalOpen(true);
+          setTerminalTabOverride('script');
+          break;
+        case 'run_boot_script':
+          setIsTerminalOpen(true);
+          handleExecuteCommand(
+            'CODIGO_ENLACE = 7740\niniciar_enlace_auxiliar(CODIGO_ENLACE)\nprint(">> Enlace auxiliar sincronizado. ¡Entrenamiento superado!")',
+            true,
+            'python'
+          );
+          break;
+        case 'open_diagnostic':
+          setIsTerminalOpen(false);
+          setDiagnosticModalSector('reactor');
+          break;
+      }
+    },
+    [handleExecuteCommand]
+  );
 
   const currentSectors = getSectorsForLocation(state.currentDestinationId);
   const currentSector = currentSectors.find(s => s.id === state.currentSectorId) || currentSectors[0];
@@ -722,16 +840,34 @@ export default function App() {
             onStart={() => {
               musicEngine.start();
               setIsMusicPlaying(true);
+              let hasSeenTutorial = false;
+              try {
+                hasSeenTutorial = localStorage.getItem(TUTORIAL_STORAGE_KEY) === 'true';
+              } catch {}
+
+              if (!hasSeenTutorial) {
+                startTransition(() => {
+                  handleStartTutorial();
+                });
+              } else {
+                startTransition(() => {
+                  setState(prev => ({ ...prev, currentScreen: 'hub' }));
+                });
+                broadcastRadio(
+                  'Cap. Juan Piña',
+                  language === 'fr'
+                    ? 'Bienvenue à bord de la Station Versailles, opérateur. Accédez aux secteurs et stabilisez le vaisseau.'
+                    : 'Bienvenido a bordo de la Estación Versalles, operador. Accede a los sectores y estabiliza la nave.',
+                  'COMMAND-01'
+                );
+              }
+            }}
+            onStartTutorial={() => {
+              musicEngine.start();
+              setIsMusicPlaying(true);
               startTransition(() => {
-                setState(prev => ({ ...prev, currentScreen: 'hub' }));
+                handleStartTutorial();
               });
-              broadcastRadio(
-                'Cap. Juan Piña',
-                language === 'fr'
-                  ? 'Bienvenue à bord de la Station Versailles, opérateur. Accédez aux secteurs et stabilisez le vaisseau.'
-                  : 'Bienvenido a bordo de la Estación Versalles, operador. Accede a los sectores y estabiliza la nave.',
-                'COMMAND-01'
-              );
             }}
             activeMissionsCount={MISSIONS.length}
           />
@@ -776,11 +912,33 @@ export default function App() {
           onClose={() => {
             setIsTerminalOpen(false);
             setPendingSnippet(null);
+            setTerminalTabOverride(null);
           }}
           onOpenHandbook={() => setIsHandbookOpen(true)}
           initialSnippet={pendingSnippet}
+          activeTabOverride={terminalTabOverride}
+          onActiveTabChange={(tab) => {
+            setTerminalActiveTab(tab);
+            if (terminalTabOverride && terminalTabOverride === tab) {
+              setTerminalTabOverride(null);
+            }
+          }}
         />
       )}
+
+      {/* Immersive Interactive Crew Tutorial Overlay */}
+      <ImmersiveTutorialOverlay
+        isActive={isTutorialActive && state.currentScreen !== 'intro'}
+        stepIndex={tutorialStepIndex}
+        state={state}
+        isMissionModalOpen={Boolean(activeMissionModal)}
+        isTerminalOpen={isTerminalOpen}
+        terminalActiveTab={terminalActiveTab}
+        onStepChange={handleTutorialStepChange}
+        onAutoAction={handleTutorialAutoAction}
+        onCompleteTutorial={handleCompleteTutorial}
+        onSkipTutorial={handleSkipTutorial}
+      />
 
       {/* Radio Communication Box */}
       <RadioChatter

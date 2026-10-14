@@ -1,16 +1,18 @@
 import React from 'react';
-import { Play, User, Languages } from 'lucide-react';
+import { Play, User, Languages, Sparkles } from 'lucide-react';
 import { CREW_MEMBERS } from '../data/crew';
 import { soundFx } from '../audio/synth';
 import { useLanguage } from '../i18n/LanguageContext';
 
 interface IntroScreenProps {
   onStart: () => void;
+  onStartTutorial?: () => void;
   activeMissionsCount: number;
 }
 
 export const IntroScreen: React.FC<IntroScreenProps> = ({
   onStart,
+  onStartTutorial,
   activeMissionsCount,
 }) => {
   const { language, setLanguage, t, getLocalizedCrew } = useLanguage();
@@ -102,18 +104,31 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
           </div>
         </div>
 
-        {/* Main Start Button */}
-        <div>
+        {/* Main Start & Immersive Tutorial Buttons */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-lg">
           <button
             onClick={() => {
               soundFx.playSuccess();
               onStart();
             }}
-            className="px-8 py-3.5 bg-[#00f5ff] hover:bg-[#3effff] text-slate-950 font-orbitron font-black text-sm tracking-widest rounded-lg shadow-[0_0_30px_rgba(0,245,255,0.6)] hover:shadow-[0_0_50px_rgba(0,245,255,0.9)] transition-all transform hover:-translate-y-0.5 active:translate-y-0.5 flex items-center gap-2.5 cursor-pointer"
+            className="w-full sm:w-auto px-7 py-3.5 bg-[#00f5ff] hover:bg-[#3effff] text-slate-950 font-orbitron font-black text-xs md:text-sm tracking-widest rounded-lg shadow-[0_0_30px_rgba(0,245,255,0.6)] hover:shadow-[0_0_50px_rgba(0,245,255,0.9)] transition-all transform hover:-translate-y-0.5 active:translate-y-0.5 flex items-center justify-center gap-2.5 cursor-pointer"
           >
             <Play className="w-4 h-4 fill-current" />
             <span>{t.intro.startMission}</span>
           </button>
+
+          {onStartTutorial && (
+            <button
+              onClick={() => {
+                soundFx.playSuccess();
+                onStartTutorial();
+              }}
+              className="w-full sm:w-auto px-6 py-3.5 bg-amber-400/15 hover:bg-amber-400/25 border-2 border-amber-400 text-amber-300 font-orbitron font-bold text-xs tracking-wider rounded-lg shadow-[0_0_20px_rgba(251,191,36,0.3)] hover:shadow-[0_0_30px_rgba(251,191,36,0.5)] transition-all transform hover:-translate-y-0.5 active:translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
+              <span>{t.intro.startTutorialBtn}</span>
+            </button>
+          )}
         </div>
 
         {/* Blinking hint */}

@@ -42,6 +42,7 @@ export interface TranslationDictionary {
     crewMembersCount: string;
     activeMissionsCount: string;
     startMission: string;
+    startTutorialBtn: string;
     startHint: string;
     activeCrew: string;
     copyright: string;
