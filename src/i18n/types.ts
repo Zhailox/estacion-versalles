@@ -47,6 +47,16 @@ export interface TranslationDictionary {
     activeCrew: string;
     copyright: string;
     langSelectTitle: string;
+    menuPlay: string;
+    menuTutorial: string;
+    menuSettings: string;
+    menuAbout: string;
+    settingsTitle: string;
+    settingsAudioSfx: string;
+    settingsMusic: string;
+    settingsCrt: string;
+    aboutTitle: string;
+    aboutDesc: string;
   };
   header: {
     hubTitle: string;

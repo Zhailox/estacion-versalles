@@ -870,6 +870,22 @@ export default function App() {
               });
             }}
             activeMissionsCount={MISSIONS.length}
+            soundEnabled={state.soundEnabled}
+            crtEffect={state.crtEffect}
+            isMusicPlaying={isMusicPlaying}
+            onToggleSound={() => {
+              const muted = soundFx.toggleMute();
+              musicEngine.setMuted(muted);
+              setState(prev => ({ ...prev, soundEnabled: !muted }));
+            }}
+            onToggleCRT={() => {
+              soundFx.playBeep(1200, 0.04);
+              setState(prev => ({ ...prev, crtEffect: !prev.crtEffect }));
+            }}
+            onToggleMusic={() => {
+              const playing = musicEngine.toggle();
+              setIsMusicPlaying(playing);
+            }}
           />
         )}
 
