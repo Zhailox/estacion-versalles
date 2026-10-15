@@ -13,8 +13,6 @@ import {
   ExternalLink,
   X,
   ChevronRight,
-  ShieldCheck,
-  Radio,
   Github,
 } from 'lucide-react';
 import { CREW_MEMBERS } from '../data/crew';
@@ -36,7 +34,6 @@ interface IntroScreenProps {
 export const IntroScreen: React.FC<IntroScreenProps> = ({
   onStart,
   onStartTutorial,
-  activeMissionsCount,
   soundEnabled = true,
   crtEffect = true,
   isMusicPlaying = false,
@@ -97,8 +94,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
       id: 'play',
       code: '01',
       label: t.intro.menuPlay,
-      sub: isFr ? 'Accéder au pont principal de la station' : 'Acceder al nexo operativo de la estación',
-      icon: <Play className="w-5 h-5 fill-current" />,
+      icon: <Play className="w-4 h-4 fill-current" />,
       primary: true,
       onClick: () => {
         soundFx.playSuccess();
@@ -111,8 +107,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
             id: 'tutorial',
             code: '02',
             label: t.intro.menuTutorial,
-            sub: isFr ? 'Entraînement guidé et Mission 00' : 'Entrenamiento guiado paso a paso y Misión 00',
-            icon: <Sparkles className="w-5 h-5" />,
+            icon: <Sparkles className="w-4 h-4" />,
             primary: false,
             onClick: () => {
               soundFx.playSuccess();
@@ -125,8 +120,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
       id: 'settings',
       code: '03',
       label: t.intro.menuSettings,
-      sub: isFr ? 'Langue, effets sonores, musique et affichage CRT' : 'Idioma, sonido, música ambiental y pantalla CRT',
-      icon: <Settings className="w-5 h-5" />,
+      icon: <Settings className="w-4 h-4" />,
       primary: false,
       onClick: () => {
         soundFx.playBeep(820, 0.05);
@@ -137,8 +131,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
       id: 'about',
       code: '04',
       label: t.intro.menuAbout,
-      sub: isFr ? 'Omnivis Labs, réseaux officiels et GitHub' : 'Omnivis Labs, redes sociales y repositorio GitHub',
-      icon: <Users className="w-5 h-5" />,
+      icon: <Users className="w-4 h-4" />,
       primary: false,
       onClick: () => {
         soundFx.playBeep(880, 0.05);
@@ -148,7 +141,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
   ];
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-[#020b18] select-none flex flex-col justify-between p-5 sm:p-8 lg:p-12">
+    <div className="relative h-screen w-full overflow-hidden bg-[#020b18] select-none flex flex-col justify-between p-6 sm:p-10 lg:p-14">
       {/* Fullscreen Hero Background Artwork */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <img
@@ -157,139 +150,28 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
           className="w-full h-full object-cover object-center scale-105 animate-[pulse_18s_ease-in-out_infinite] opacity-90"
         />
         {/* Left & Bottom Cinematic Vignette Overlays for Menu Legibility */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#020b18]/95 via-[#020b18]/55 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#020b18]/95 via-transparent to-[#020b18]/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#020b18]/90 via-[#020b18]/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#020b18]/90 via-transparent to-[#020b18]/40" />
         <div className="absolute inset-0 stars-layer opacity-25" />
       </div>
 
-      {/* ================= TOP ROW (TOP-LEFT & TOP-RIGHT CORNERS) ================= */}
-      <div className="relative z-10 flex items-start justify-between gap-4 w-full">
-        {/* TOP-LEFT: Game Logo & Title Block */}
-        <div className="flex items-start gap-4 animate-in fade-in slide-in-from-left-6 duration-500">
-          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden border-2 border-[#00f5ff]/60 shadow-[0_0_25px_rgba(0,245,255,0.35)] bg-[#010915]/90 p-1.5 flex items-center justify-center shrink-0">
-            <img
-              src="/assets/logo.webp"
-              alt="Omnivis Labs Logo"
-              className="w-full h-full object-contain rounded-xl"
-            />
-          </div>
-
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="px-2 py-0.5 rounded bg-[#00f5ff]/15 border border-[#00f5ff]/40 font-tech text-[10px] text-[#00f5ff] tracking-widest uppercase">
-                OMNIVIS LABS // VOID CODE
-              </span>
-              <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-tech text-emerald-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                ONLINE
-              </span>
-            </div>
-
-            <h1 className="font-orbitron font-black text-2xl sm:text-4xl lg:text-5xl tracking-widest text-white uppercase drop-shadow-[0_0_25px_rgba(0,245,255,0.45)] leading-none">
-              {t.common.stationName}
-            </h1>
-            <p className="font-tech text-[11px] sm:text-xs text-cyan-300/80 tracking-[0.2em] uppercase mt-1.5">
-              {t.intro.subtitle}
-            </p>
-          </div>
-        </div>
-
-        {/* TOP-RIGHT: Station Telemetry & Crew Corner HUD */}
-        <div className="hidden md:flex flex-col items-end gap-2.5 animate-in fade-in slide-in-from-right-6 duration-500">
-          {/* Telemetry Status Pill */}
-          <div className="flex items-center gap-4 bg-[#021022]/85 border border-[#00f5ff]/30 rounded-xl px-4 py-2.5 backdrop-blur-md shadow-[0_0_25px_rgba(0,0,0,0.6)]">
-            <div className="flex items-center gap-2 border-r border-slate-700/80 pr-4">
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
-              <div>
-                <div className="text-[9px] font-tech text-slate-400 uppercase leading-none">
-                  {t.common.status}
-                </div>
-                <div className="font-orbitron font-bold text-xs text-emerald-400 tracking-wider mt-0.5">
-                  {t.intro.operationalStatus}
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2 border-r border-slate-700/80 pr-4">
-              <Radio className="w-4 h-4 text-amber-400 animate-pulse" />
-              <div>
-                <div className="text-[9px] font-tech text-slate-400 uppercase leading-none">
-                  {t.common.missions}
-                </div>
-                <div className="font-orbitron font-bold text-xs text-amber-400 tracking-wider mt-0.5">
-                  {activeMissionsCount} {t.intro.activeMissionsCount}
-                </div>
-              </div>
-            </div>
-
-            {/* Quick Language Switcher in Top-Right */}
-            <div className="flex items-center gap-1.5">
-              <button
-                onClick={() => {
-                  soundFx.playBeep(650, 0.04);
-                  setLanguage('es');
-                }}
-                className={`px-2 py-1 rounded text-[10px] font-orbitron font-bold transition-all cursor-pointer ${
-                  language === 'es'
-                    ? 'bg-[#00f5ff] text-slate-950 shadow-[0_0_10px_rgba(0,245,255,0.6)]'
-                    : 'bg-slate-900/70 text-slate-400 hover:text-white border border-slate-700'
-                }`}
-              >
-                🇻🇪 ES
-              </button>
-              <button
-                onClick={() => {
-                  soundFx.playBeep(750, 0.04);
-                  setLanguage('fr');
-                }}
-                className={`px-2 py-1 rounded text-[10px] font-orbitron font-bold transition-all cursor-pointer ${
-                  language === 'fr'
-                    ? 'bg-[#00f5ff] text-slate-950 shadow-[0_0_10px_rgba(0,245,255,0.6)]'
-                    : 'bg-slate-900/70 text-slate-400 hover:text-white border border-slate-700'
-                }`}
-              >
-                🇫🇷 FR
-              </button>
-            </div>
-          </div>
-
-          {/* Compact Active Crew Strip */}
-          <div className="flex items-center gap-2 bg-[#010915]/80 border border-slate-800/90 rounded-xl p-2 backdrop-blur-md">
-            <span className="text-[9px] font-orbitron font-bold text-[#00f5ff] tracking-widest uppercase px-2">
-              {t.intro.activeCrew}:
-            </span>
-            {Object.values(localizedCrew).map((crew, idx) => (
-              <div
-                key={idx}
-                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-900/80 border border-slate-800/80"
-              >
-                <span
-                  className="w-2 h-2 rounded-full shrink-0"
-                  style={{ backgroundColor: crew.avatarColor }}
-                />
-                <span className="text-[10px] font-orbitron font-bold text-slate-200 truncate">
-                  {crew.name}
-                </span>
-              </div>
-            ))}
-          </div>
+      {/* ================= TOP-LEFT: CLEAN GAME TITLE ================= */}
+      <div className="relative z-10 flex items-start justify-between w-full">
+        <div className="animate-in fade-in slide-in-from-left-6 duration-500">
+          <h1 className="font-orbitron font-black text-3xl sm:text-5xl lg:text-6xl tracking-widest text-white uppercase drop-shadow-[0_0_30px_rgba(0,245,255,0.5)] leading-none">
+            {t.common.stationName}
+          </h1>
+          <div className="w-32 sm:w-48 h-1 bg-gradient-to-r from-[#00f5ff] to-transparent rounded-full mt-3 shadow-[0_0_12px_#00f5ff]" />
         </div>
       </div>
 
-      {/* ================= BOTTOM ROW (BOTTOM-LEFT MENU & BOTTOM-RIGHT CORNER) ================= */}
-      <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-6 w-full mt-auto">
-        {/* BOTTOM-LEFT: Main Video Game Navigation Menu */}
+      {/* ================= BOTTOM ROW (BOTTOM-LEFT MENU & BOTTOM-RIGHT HUD) ================= */}
+      <div className="relative z-10 flex flex-col md:flex-row items-start md:items-end justify-between gap-6 w-full mt-auto">
+        {/* BOTTOM-LEFT: Minimalist Game Navigation Menu */}
         <nav
           aria-label="Main Menu"
-          className="w-full sm:w-[390px] lg:w-[430px] flex flex-col gap-2.5 animate-in fade-in slide-in-from-bottom-6 duration-500"
+          className="w-full sm:w-[300px] lg:w-[330px] flex flex-col gap-2.5 animate-in fade-in slide-in-from-bottom-6 duration-500"
         >
-          <div className="flex items-center gap-2 mb-1 pl-1">
-            <span className="w-2 h-2 rounded-full bg-[#00f5ff] animate-ping" />
-            <span className="font-tech text-[11px] text-cyan-300/90 tracking-widest uppercase">
-              {t.intro.startHint}
-            </span>
-          </div>
-
           {menuOptions.map((item) => {
             const isHovered = hoveredItem === item.id;
             return (
@@ -302,7 +184,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
                   }
                 }}
                 onClick={item.onClick}
-                className={`group relative w-full text-left rounded-xl p-3.5 sm:px-5 sm:py-4 transition-all duration-200 cursor-pointer overflow-hidden backdrop-blur-md border flex items-center justify-between ${
+                className={`group relative w-full text-left rounded-xl px-4 py-3.5 transition-all duration-200 cursor-pointer overflow-hidden backdrop-blur-md border flex items-center justify-between ${
                   item.primary
                     ? isHovered
                       ? 'bg-[#00f5ff] text-slate-950 border-[#00f5ff] shadow-[0_0_35px_rgba(0,245,255,0.75)] translate-x-2'
@@ -323,7 +205,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
                   }`}
                 />
 
-                <div className="flex items-center gap-3.5 pl-2 min-w-0">
+                <div className="flex items-center gap-3 pl-2">
                   <span
                     className={`font-tech text-xs font-bold tracking-widest ${
                       item.primary
@@ -337,7 +219,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
                   </span>
 
                   <div
-                    className={`p-2 rounded-lg shrink-0 transition-colors ${
+                    className={`p-1.5 rounded-lg shrink-0 transition-colors ${
                       item.primary
                         ? 'bg-slate-950/15 text-slate-950'
                         : isHovered
@@ -348,28 +230,17 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
                     {item.icon}
                   </div>
 
-                  <div className="min-w-0">
-                    <div
-                      className={`font-orbitron font-black text-sm sm:text-base tracking-widest uppercase truncate ${
-                        item.primary ? 'text-slate-950' : 'text-white'
-                      }`}
-                    >
-                      {item.label}
-                    </div>
-                    <div
-                      className={`font-tech text-[11px] truncate ${
-                        item.primary
-                          ? 'text-slate-900/80 font-semibold'
-                          : 'text-slate-400 group-hover:text-cyan-200/90'
-                      }`}
-                    >
-                      {item.sub}
-                    </div>
-                  </div>
+                  <span
+                    className={`font-orbitron font-black text-sm sm:text-base tracking-widest uppercase ${
+                      item.primary ? 'text-slate-950' : 'text-white'
+                    }`}
+                  >
+                    {item.label}
+                  </span>
                 </div>
 
                 <ChevronRight
-                  className={`w-5 h-5 shrink-0 transition-transform duration-200 ${
+                  className={`w-4 h-4 shrink-0 transition-transform duration-200 ${
                     isHovered ? 'translate-x-1' : ''
                   } ${item.primary ? 'text-slate-950' : 'text-[#00f5ff]'}`}
                 />
@@ -378,9 +249,61 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
           })}
         </nav>
 
-        {/* BOTTOM-RIGHT: System Build, Quick Toggles & Omnivis Labs Copyright */}
-        <div className="flex flex-col items-start sm:items-end gap-2 self-end animate-in fade-in slide-in-from-right-6 duration-500">
-          <div className="flex items-center gap-2 bg-[#021020]/85 border border-slate-800 rounded-xl px-3.5 py-2 backdrop-blur-md">
+        {/* BOTTOM-RIGHT: Active Crew, Language Switch & System Controls */}
+        <div className="flex flex-col items-start md:items-end gap-2.5 self-stretch md:self-end animate-in fade-in slide-in-from-right-6 duration-500">
+          {/* Active Crew Strip */}
+          <div className="flex flex-wrap items-center gap-2 bg-[#010915]/85 border border-slate-800/90 rounded-xl p-2 backdrop-blur-md">
+            <span className="text-[9px] font-orbitron font-bold text-[#00f5ff] tracking-widest uppercase px-2">
+              {t.intro.activeCrew}:
+            </span>
+            {Object.values(localizedCrew).map((crew, idx) => (
+              <div
+                key={idx}
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-900/80 border border-slate-800/80"
+              >
+                <span
+                  className="w-2 h-2 rounded-full shrink-0"
+                  style={{ backgroundColor: crew.avatarColor }}
+                />
+                <span className="text-[10px] font-orbitron font-bold text-slate-200 truncate">
+                  {crew.name}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Language Switcher + Quick Audio/CRT Toggles */}
+          <div className="flex flex-wrap items-center gap-2 bg-[#021020]/85 border border-slate-800 rounded-xl px-3 py-2 backdrop-blur-md">
+            {/* Language Switch */}
+            <div className="flex items-center gap-1.5 pr-2 border-r border-slate-800">
+              <button
+                onClick={() => {
+                  soundFx.playBeep(650, 0.04);
+                  setLanguage('es');
+                }}
+                className={`px-2.5 py-1 rounded-lg text-[10px] font-orbitron font-bold transition-all cursor-pointer ${
+                  language === 'es'
+                    ? 'bg-[#00f5ff] text-slate-950 shadow-[0_0_10px_rgba(0,245,255,0.6)]'
+                    : 'bg-slate-900/70 text-slate-400 hover:text-white border border-slate-700'
+                }`}
+              >
+                🇻🇪 ES
+              </button>
+              <button
+                onClick={() => {
+                  soundFx.playBeep(750, 0.04);
+                  setLanguage('fr');
+                }}
+                className={`px-2.5 py-1 rounded-lg text-[10px] font-orbitron font-bold transition-all cursor-pointer ${
+                  language === 'fr'
+                    ? 'bg-[#00f5ff] text-slate-950 shadow-[0_0_10px_rgba(0,245,255,0.6)]'
+                    : 'bg-slate-900/70 text-slate-400 hover:text-white border border-slate-700'
+                }`}
+              >
+                🇫🇷 FR
+              </button>
+            </div>
+
             {onToggleSound && (
               <button
                 onClick={onToggleSound}
@@ -412,7 +335,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
             )}
 
             <span className="text-[10px] font-tech text-slate-400 pl-1">
-              BUILD <strong className="text-[#00f5ff]">v2.4</strong>
+              <strong className="text-[#00f5ff]">v2.4</strong>
             </span>
           </div>
 
@@ -600,7 +523,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
                     {t.intro.aboutTitle}
                   </h2>
                   <p className="font-tech text-[11px] text-[#00f5ff]">
-                    ESTACIÓN VERSALLES // VOID CODE
+                    ESTACIÓN VERSALLES
                   </p>
                 </div>
               </div>
